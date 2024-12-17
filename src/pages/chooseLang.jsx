@@ -1,12 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
-import Nav from "./nav"
+import Nav from "../components/nav"
 
 
 const chooseLang = () => {
   return (
-    <>
+    <div className='mx-auto max-w-sm'>
       <div className='m-4'>
         {/*  */}
         <div className='pb-1 pt-16'>
@@ -37,14 +38,14 @@ const chooseLang = () => {
               {/* <div className='bg-green-500 rounded-full border-2 border-green-500 flex justify-center items-center p-1'> <FaCheck className='w-[12px] h-[12px]'/> </div> */}
             </button>
             <button className='flex justify-center font-bold font-poppins text-white cursor-pointer py-2 mt-10 bg-themeColor'>
-              <h1>Continue</h1>
+              <Link to="/login"><h1>Continue</h1></Link>
             </button>
           </div>
         </div>
         {/*  */}
       </div>
       <Nav />
-    </>
+    </div>
 
   )
 }
