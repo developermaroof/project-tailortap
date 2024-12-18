@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         hoverColor: "#D5E8D6",
         themeColor: "#38D55B",
+        plusIconBg: "#36BC54",
       },
       plugins: [],
     },
