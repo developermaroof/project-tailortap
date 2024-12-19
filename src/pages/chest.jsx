@@ -2,9 +2,9 @@ import React from 'react'
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import Nav from "../components/nav"
-import Length from "../assets/length.png"
+import Chest from "../assets/shoulder.png"
 import { Link } from'react-router-dom';
-const length = () => {
+const chest = () => {
   return (
     <div className='mx-auto max-w-sm'>
         <div className='m-4'>
@@ -28,13 +28,13 @@ const length = () => {
 
                     <div className='flex flex-col justify-center items-center gap-10'>
                         <div>
-                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] uppercase p-2'>Length</p>
+                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2 uppercase'>chest</p>
                         </div>
-                        <div className='relative h-[330px]'>
-                            <img src={Length} alt="lengthvector" />
-                            <div className='flex rotate-90 right-[-120px] text-lg top-[155px] justify-center items-center absolute'>
+                        <div className='relative  h-[330px]'>
+                            <img src={Chest} alt="lengthvector" />
+                            <div className='flex rotate-0 right-[30px] text-lg top-[115px] justify-center items-center absolute'>
                                 <FaAngleLeft className='text-themeColor'/>
-                                <p className='text-themeColor'>- - - - - - - - - - - -  - - - - - - - - - - - - - - - - -</p>
+                                <p className='text-themeColor'>- - - - -  - - - - - - - - - - - - - -</p>
                                 <FaAngleRight className='text-themeColor'/>
                             </div>
                         </div>
@@ -42,10 +42,10 @@ const length = () => {
 
                     <div className='flex flex-col gap-4'>
                         <div>
-                            <input type="text" placeholder='Enter Length' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
+                            <input type="text" placeholder='Enter Chest' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
                         <div>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/shoulder">Next</Link></button>
+                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/fitting">Next</Link></button>
                         </div>
                     </div>
                 </div>
@@ -56,4 +56,4 @@ const length = () => {
   )
 }
 
-export default length
+export default chest
