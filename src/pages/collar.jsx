@@ -28,10 +28,10 @@ const collar = () => {
 
                     <div className='flex flex-col justify-center items-center gap-10'>
                         <div>
-                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2'>Collar</p>
+                            <p className='font-bold font-inner text-white uppercase cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2'>Collar</p>
                         </div>
-                        <div className='h-[330px]'>
-                            <img src={Collar} alt="armsvector" />
+                        <div className='h-[280px]'>
+                            <img src={Collar} alt="armsvector" className='w-[280px]'/>
                         </div>
                     </div>
 
@@ -39,8 +39,9 @@ const collar = () => {
                         <div>
                             <input type="text" placeholder='Enter Collar' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
-                        <div>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/chest">Next</Link></button>
+                        <div className='flex flex-col gap-2'>
+                            <button className='font-bold uppercase font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/chest">Next</Link></button>
+                            <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,9 @@
 import React from 'react'
 import { IoMdClose } from "react-icons/io";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
 import Length from "../assets/length.png"
+import lengthupdown from "../assets/lengthupdown.png"
 import { Link } from'react-router-dom';
 const length = () => {
   return (
@@ -28,14 +29,12 @@ const length = () => {
 
                     <div className='flex flex-col justify-center items-center gap-10'>
                         <div>
-                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] uppercase p-2'>Length</p>
+                            <p className='font-bold font-inner uppercase text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] uppercase p-2'>Length</p>
                         </div>
-                        <div className='relative h-[330px]'>
-                            <img src={Length} alt="lengthvector" />
-                            <div className='flex rotate-90 right-[-120px] text-lg top-[155px] justify-center items-center absolute'>
-                                <FaAngleLeft className='text-themeColor'/>
-                                <p className='text-themeColor'>- - - - - - - - - - - -  - - - - - - - - - - - - - - - - -</p>
-                                <FaAngleRight className='text-themeColor'/>
+                        <div className='relative h-[280px]'>
+                            <img src={Length} alt="lengthvector"  className='w-[180px]'/>
+                            <div className='flex right-[20px] text-lg top-[20px] justify-center items-center absolute'>
+                                <img src={lengthupdown} alt="" />
                             </div>
                         </div>
                     </div>
@@ -44,8 +43,9 @@ const length = () => {
                         <div>
                             <input type="text" placeholder='Enter Length' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
-                        <div>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/shoulder">Next</Link></button>
+                        <div className='flex flex-col gap-2'>
+                            <button className='font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/shoulder">Next</Link></button>
+                            <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
                 </div>

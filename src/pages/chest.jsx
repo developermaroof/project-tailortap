@@ -1,8 +1,9 @@
 import React from 'react'
 import { IoMdClose } from "react-icons/io";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
 import Chest from "../assets/shoulder.png"
+import chestrightleft from "../assets/shoulderrightleft.png"
 import { Link } from'react-router-dom';
 const chest = () => {
   return (
@@ -28,14 +29,12 @@ const chest = () => {
 
                     <div className='flex flex-col justify-center items-center gap-10'>
                         <div>
-                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2 uppercase'>chest</p>
+                            <p className='font-bold font-inner uppercase text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2 uppercase'>chest</p>
                         </div>
-                        <div className='relative  h-[330px]'>
-                            <img src={Chest} alt="lengthvector" />
-                            <div className='flex rotate-0 right-[30px] text-lg top-[115px] justify-center items-center absolute'>
-                                <FaAngleLeft className='text-themeColor'/>
-                                <p className='text-themeColor'>- - - - -  - - - - - - - - - - - - - -</p>
-                                <FaAngleRight className='text-themeColor'/>
+                        <div className='relative  h-[280px]'>
+                            <img src={Chest} alt="lengthvector" className='w-[250px]'/>
+                            <div className='flex right-[25px] text-lg top-[110px] justify-center items-center absolute'>
+                                <img src={chestrightleft} alt="" />
                             </div>
                         </div>
                     </div>
@@ -44,8 +43,9 @@ const chest = () => {
                         <div>
                             <input type="text" placeholder='Enter Chest' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
-                        <div>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/fitting">Next</Link></button>
+                        <div className='flex flex-col gap-2'>
+                            <button className='font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/fitting">Next</Link></button>
+                            <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
                 </div>

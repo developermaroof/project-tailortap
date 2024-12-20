@@ -1,8 +1,9 @@
 import React from 'react'
 import { IoMdClose } from "react-icons/io";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
 import Cuffs from "../assets/cuffs.png"
+import cuffsarrow from "../assets/cuffsarrow.png"
 import { Link } from'react-router-dom';
 const cuffs = () => {
   return (
@@ -28,17 +29,12 @@ const cuffs = () => {
 
                     <div className='flex flex-col justify-center items-center gap-10'>
                         <div>
-                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2'>Cuffs</p>
+                            <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm uppercase text-center w-[120px] p-2'>Cuffs</p>
                         </div>
-                        <div className='relative h-[330px]'>
-                            <img src={Cuffs} alt="armsvector" />
-                            <div className='flex rotate-[105deg] right-[-55px] text-lg top-[170px] justify-center items-center absolute'>
-                                <p className='text-themeColor'>- - - - - - - -</p>
-                                <FaAngleRight className='text-themeColor'/>
-                            </div>
-                            <div className='flex rotate-[65deg] right-[-32px] text-lg top-[108px] justify-center items-center absolute'>
-                                <FaAngleLeft className='text-themeColor'/>
-                                <p className='text-themeColor'>- -</p>
+                        <div className='relative h-[280px]'>
+                            <img src={Cuffs} alt="armsvector" className='w-[80px]'/>
+                            <div className='flex right-[-30px] text-lg top-[130px] justify-center items-center absolute'>
+                                <img src={cuffsarrow} alt="" />
                             </div>
                         </div>
                     </div>
@@ -47,8 +43,9 @@ const cuffs = () => {
                         <div>
                             <input type="text" placeholder='Enter Cuffs' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
-                        <div>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-3'> <Link to="/measurements/collar">Next</Link></button>
+                        <div className='flex flex-col gap-2'>
+                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md uppercase w-full p-2'> <Link to="/measurements/collar">Next</Link></button>
+                            <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
                 </div>
