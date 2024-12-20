@@ -31,7 +31,7 @@ const Home = () => {
           {/* Model */}
           {isModelOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-white mx-auto mx-6 p-8 rounded-lg max-w-sm w-full shadow-lg relative">
+                <div className="bg-white mx-6 p-8 rounded-lg max-w-sm w-full shadow-lg relative">
                   <div className='absolute top-5 right-5 text-white bg-themeColor rounded-full p-1 cursor-pointer' onClick={toggleModel}>
                     <IoMdClose />
                   </div>
