@@ -13,6 +13,8 @@ import Fitting from "./pages/fitting";
 import Lap from "./pages/lap";
 import PantShalwar from "./pages/pantshalwar";
 import Paincha from "./pages/paincha";
+import AdditionalDetails from "./pages/additionaldetail";
+import Congratulations from "./pages/congratulations";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -34,6 +36,11 @@ function App() {
         <Route path="/measurements/lap" element={<Lap />} />
         <Route path="/measurements/pantshalwar" element={<PantShalwar />} />
         <Route path="/measurements/paincha" element={<Paincha />} />
+        <Route
+          path="/measurements/additionaldetails"
+          element={<AdditionalDetails />}
+        />
+        <Route path="/congratulations" element={<Congratulations />} />
       </Routes>
     </Router>
   );
