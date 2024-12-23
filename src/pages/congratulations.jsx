@@ -1,6 +1,5 @@
 import React from 'react'
 import { IoMdClose } from "react-icons/io";
-import Nav4Green from "../components/nav4Green"
 import { Link } from 'react-router-dom';
 
 const congratulations = () => {
@@ -26,7 +25,6 @@ const congratulations = () => {
                     </div>
                 </div>
             </div>
-            <Nav4Green />
         </div>
   )
 }

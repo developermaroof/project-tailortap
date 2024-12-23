@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
-import Nav from "../components/nav"
 
 
-const chooseLang = () => {
+const ChooseLang = () => {
+
+  const [activeLanguage, setActiveLanguage] = useState('English')
+
+  const handleLanguageChange = (language) => {
+    setActiveLanguage(language)
+  }
+
   return (
     <div className='mx-auto max-w-sm'>
       <div className='m-4'>
@@ -16,27 +21,29 @@ const chooseLang = () => {
             <h1 className='font-bold font-poppins uppercase leading-tight tracking-wide'>Language</h1>
             <div className='border-[1px] border-themeColor w-[150px]'></div>
           </div>
-          <div className='relavite'>
-            <div className='absolute top-5 right-5 bg-themeColor rounded-full p-1'>
-              <IoMdClose />
-            </div>
-          </div>
         </div>
-        {/*  */}
+        {/* Language Buttons */}
         <div className='py-2 mt-10'>
           <div className='flex flex-col gap-5'>
-            <button className='flex justify-between cursor-pointer hover:bg-hoverColor bg-hoverColor p-4 shadow-md shadow-gray-400 rounded-md'>
-              <h1 className='font-inner font-normal'>English</h1>
-              <div className='bg-themeColor rounded-full border-2 border-themeColor flex justify-center items-center p-1'> <FaCheck className='w-[12px] h-[12px]'/> </div>
-            </button>
-            <button className='flex justify-between cursor-pointer hover:bg-hoverColor p-4 shadow-md shadow-gray-400 rounded-md'>
-              <h1 className='font-inner font-normal'>Urdu</h1>
-              {/* <div className='bg-themeColor rounded-full border-2 border-themeColor flex justify-center items-center p-1'> <FaCheck className='w-[12px] h-[12px]'/> </div> */}
-            </button>
-            <button className='flex justify-between cursor-pointer hover:bg-hoverColor p-4 shadow-md shadow-gray-400 rounded-md'>
-              <h1 className='font-inner font-normal'>Sindhi</h1>
-              {/* <div className='bg-themeColor rounded-full border-2 border-themeColor flex justify-center items-center p-1'> <FaCheck className='w-[12px] h-[12px]'/> </div> */}
-            </button>
+            {
+              ['English', 'Urdu', 'Sindhi'].map((language)=>(
+                <button 
+                  key={language}
+                  onClick={()=> handleLanguageChange(language)}
+                  className={`flex justify-between cursor-pointer p-4 shadow-md shadow-gray-400 rounded-md ${
+                    activeLanguage === language ? 'bg-hoverColor' : 'hover:bg-hoverColor'
+                  }`}
+                >
+                  <h1 className='font-inner font-normal'>{language}</h1>
+                  {activeLanguage === language && (
+                    <div className='bg-themeColor rounded-full border-2 border-themeColor flex justify-center items-center p-1'>
+                      <FaCheck className='w-[12px] h-[12px]' />
+                    </div>
+                  )}
+                </button>
+              ))
+            }
+            {/* Continue Button */}
             <button className='flex justify-center font-bold font-poppins text-white cursor-pointer py-2 mt-10 bg-themeColor'>
               <Link to="/login"><h1>Continue</h1></Link>
             </button>
@@ -44,10 +51,9 @@ const chooseLang = () => {
         </div>
         {/*  */}
       </div>
-      <Nav />
     </div>
 
   )
 }
 
-export default chooseLang
+export default ChooseLang
