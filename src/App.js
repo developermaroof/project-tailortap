@@ -15,7 +15,11 @@ import PantShalwar from "./pages/pantshalwar";
 import Paincha from "./pages/paincha";
 import AdditionalDetails from "./pages/additionaldetail";
 import Congratulations from "./pages/congratulations";
+import ChoosePlan from "./pages/choosePlan";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ChooseBankAcc from "./pages/chooseBankAcc";
+import BankInfo from "./pages/bankInfo";
+import ThankYou from "./pages/thankyou";
 
 function App() {
   return (
@@ -41,6 +45,10 @@ function App() {
           element={<AdditionalDetails />}
         />
         <Route path="/congratulations" element={<Congratulations />} />
+        <Route path="/chooseplan" element={<ChoosePlan />} />
+        <Route path="/choosebankacc" element={<ChooseBankAcc />} />
+        <Route path="/bankinfo" element={<BankInfo />} />
+        <Route path="/thankyou" element={<ThankYou />} />
       </Routes>
     </Router>
   );

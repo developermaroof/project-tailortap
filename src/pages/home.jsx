@@ -39,7 +39,7 @@ const Home = () => {
                     <img src={ModelImg} alt="" className="w-[50px]"/>
                     <h1 className="font-bold font-poppins text-black text-[17px] leading-loose uppercase">Upgrade your plan!</h1>
                     <p className="font-poppins text-xs">You’re in your 7 days free trail</p>
-                    <button className="bg-themeColor text-white cursor-pointer text-xs rounded-[4px] p-2 px-6 mt-4 font-bold font-poppins">Upgrade Now</button>
+                    <button className="bg-themeColor text-white cursor-pointer text-xs rounded-[4px] p-2 px-6 mt-4 font-bold font-poppins"><Link to="/chooseplan">Upgrade Now</Link></button>
                   </div>
                 </div>
             </div>
