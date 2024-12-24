@@ -9,8 +9,6 @@ const [password, setPassword] = useState("")
 const navigate = useNavigate()
 
   const handleInput = (event) => {
-    console.log(event.target.value)
-    console.log(event.target.name)
     const name = event.target.name
     const value = event.target.value
     if ("username" === name) {

@@ -17,17 +17,16 @@ const Home = () => {
 
   return (
     <div className='mx-auto max-w-sm'>
+      <div className='relative'>
+        <div onClick={toggleModel} className='absolute top-0 right-5 bg-black rounded-full p-[2px] cursor-pointer'>
+          <img src={Video} alt="" className='w-[22px] h-[22px]'/>
+        </div>
+        <div className='absolute top-0 left-5'>
+            <FaAngleLeft className='w-[22px] h-[22px]'/>
+        </div>
+      </div>
       <div className='m-4'>
-        {/*  */}
         <div className='pb-1 pt-16'>
-          <div className='relavite'>
-            <div onClick={toggleModel} className='absolute top-5 right-5 bg-black rounded-full p-[2px] cursor-pointer'>
-              <img src={Video} alt="" className='w-[22px] h-[22px]'/>
-            </div>
-            <div className='absolute top-5 left-5'>
-                <FaAngleLeft className='w-[22px] h-[22px]'/>
-            </div>
-          </div>
           {/* Model */}
           {isModelOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

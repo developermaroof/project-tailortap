@@ -1,11 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
-import Length from "../assets/length.png"
+import Lengthlogo from "../assets/length.png"
 import lengthupdown from "../assets/lengthupdown.png"
 import { Link } from'react-router-dom';
-const length = () => {
+const Length = () => {
+    const [length, setLength] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!location.state?.clientId) {
+          navigate("/clientdetails");
+        }
+      }, [location, navigate]);
+
+      const handleSaveLength = () => {
+        const clientId = location.state.clientId;
+        const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
+    
+        const updatedClients = getClientData.map(client => {
+            if (client.id === clientId) {
+                return { ...client, length };
+            }
+            return client;
+        });
+    
+        localStorage.setItem("client", JSON.stringify(updatedClients));
+        navigate("/measurements/shoulder", { state: { clientId } });
+    };
+    
+
   return (
     <div className='mx-auto max-w-sm'>
         <div className='m-4'>
@@ -32,7 +59,7 @@ const length = () => {
                             <p className='font-bold font-inner uppercase text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] uppercase p-2'>Length</p>
                         </div>
                         <div className='relative h-[280px]'>
-                            <img src={Length} alt="lengthvector"  className='w-[180px]'/>
+                            <img src={Lengthlogo} alt="lengthvector"  className='w-[180px]'/>
                             <div className='flex right-[20px] text-lg top-[20px] justify-center items-center absolute'>
                                 <img src={lengthupdown} alt="" />
                             </div>
@@ -41,10 +68,15 @@ const length = () => {
 
                     <div className='flex flex-col gap-4'>
                         <div>
-                            <input type="text" placeholder='Enter Length' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
+                            <input
+                                value={length}
+                                onChange={(e) => setLength(e.target.value)} 
+                                type="text" placeholder='Enter Length' 
+                                className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'
+                            />
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <button className='font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/shoulder">Next</Link></button>
+                            <button onClick={handleSaveLength} className='font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/shoulder">Next</Link></button>
                             <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
@@ -56,4 +88,4 @@ const length = () => {
   )
 }
 
-export default length
+export default Length

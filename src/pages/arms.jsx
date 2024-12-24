@@ -2,12 +2,12 @@ import React from 'react'
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
-import Arms from "../assets/arms.png"
+import ArmsLogo from "../assets/arms.png"
 import armsright from "../assets/armsright.png"
 import armsleft from "../assets/armsleft.png"
 
 import { Link } from'react-router-dom';
-const arms = () => {
+const Arms = () => {
   return (
     <div className='mx-auto max-w-sm'>
         <div className='m-4'>
@@ -34,7 +34,7 @@ const arms = () => {
                             <p className='font-bold font-inner uppercase text-white cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2'>Arms</p>
                         </div>
                         <div className='relative h-[280px]'>
-                            <img src={Arms} alt="armsvector" className='w-[270px]'/>
+                            <img src={ArmsLogo} alt="armsvector" className='w-[270px]'/>
                             <div className='flex right-[55px] text-lg top-[70px] justify-center items-center absolute'>
                                 <img src={armsright} alt="" />
                             </div>
@@ -61,4 +61,4 @@ const arms = () => {
   )
 }
 
-export default arms
+export default Arms
