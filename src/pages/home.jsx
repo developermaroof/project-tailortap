@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Video from "../assets/video.png"
 import Nav from "../components/nav"
@@ -10,7 +10,15 @@ import ModelImg from "../assets/modelimg.png"
 const Home = () => {
 
   const [isModelOpen, setIsModelOpen] = useState(false)
-
+  // 
+  const [clientData, setClientData] = useState([])
+  
+  // Fetch client data from local storage
+  useEffect(() => {
+    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
+    setClientData(getClientData);
+  }, []);
+  // 
   const toggleModel = () => {
     setIsModelOpen(!isModelOpen)
   }
@@ -57,9 +65,23 @@ const Home = () => {
           </div>
           {/*  */}
           <h1 className='font-bold mt-10'>My Clients</h1>
-          <div className='flex flex-col justify-center relative items-center text-center'>
-            <img src={NoClients} alt="" className='w-full h-full'/>
-            <p className='text-gray-400 absolute bottom-2'>No Client has been created yet..</p>
+          <div className="border-2 p-10">
+            {
+              clientData.length > 0 ? (
+                <div className='mt-4 p-10 border-2 border-themeColor'>
+                  {clientData.map((client) => (
+                    <div key={client.id} className="border-2 mt-2 border-red-600 flex flex-col justify-center items-center text-center">
+                      <h1>{client.fullname}</h1>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className='flex flex-col justify-center relative items-center text-center'>
+                  <img src={NoClients} alt="" className='w-full h-full'/>
+                  <p className='text-gray-400 absolute bottom-2'>No Client has been created yet..</p>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
