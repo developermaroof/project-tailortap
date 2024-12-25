@@ -5,6 +5,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
 import ShoulderLogo from "../assets/shoulder.png"
 import shoulderrightleft from "../assets/shoulderrightleft.png"
+
 const Shoulder = () => {
     const [shoulder, setShoulder] = useState('');
     const location = useLocation();
@@ -16,20 +17,17 @@ const Shoulder = () => {
             navigate("/clientdetails");
         }
     }, [location, navigate]);
-    
-      
 
       const handleSaveShoulder = () => {
         const clientId = location.state.clientId;
         const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    
         const updatedClients = getClientData.map(client => {
           if (client.id === clientId) {
             return {...client, shoulder };
           }
           return client;
         });
-    
+        
         localStorage.setItem("client", JSON.stringify(updatedClients));
         navigate("/measurements/arms", { state: { clientId } });
       };

@@ -1,11 +1,37 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
-import Cuffs from "../assets/cuffs.png"
+import CuffsLogo from "../assets/cuffs.png"
 import cuffsarrow from "../assets/cuffsarrow.png"
-import { Link } from'react-router-dom';
-const cuffs = () => {
+
+const Cuffs = () => {
+    const [cuffs, setCuffs] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const clientId = location.state?.clientId;
+        if (!clientId) {
+            navigate("/clientdetails");
+        }
+    }, [location, navigate]);
+    
+    const handleSaveCuffs = () => {
+        const clientId = location.state.clientId;
+        const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
+        const updatedClients = getClientData.map(client => {
+            if (client.id === clientId) {
+                return {...client, cuffs };
+            }
+            return client;
+        });
+        
+        localStorage.setItem("client", JSON.stringify(updatedClients));
+        navigate("/measurements/collar", { state: { clientId } });
+    };
+
   return (
     <div className='mx-auto max-w-sm'>
         <div className='m-4'>
@@ -32,7 +58,7 @@ const cuffs = () => {
                             <p className='font-bold font-inner text-white cursor-pointer bg-themeColor rounded-sm uppercase text-center w-[120px] p-2'>Cuffs</p>
                         </div>
                         <div className='relative h-[280px]'>
-                            <img src={Cuffs} alt="armsvector" className='w-[80px]'/>
+                            <img src={CuffsLogo} alt="armsvector" className='w-[80px]'/>
                             <div className='flex right-[-30px] text-lg top-[130px] justify-center items-center absolute'>
                                 <img src={cuffsarrow} alt="" />
                             </div>
@@ -41,10 +67,13 @@ const cuffs = () => {
 
                     <div className='flex flex-col gap-4'>
                         <div>
-                            <input type="text" placeholder='Enter Cuffs' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
+                            <input
+                                value={cuffs}
+                                onChange={(e) => setCuffs(e.target.value)}
+                                type="text" placeholder='Enter Cuffs' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <button className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md uppercase w-full p-2'> <Link to="/measurements/collar">Next</Link></button>
+                            <button onClick={handleSaveCuffs} className='font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-md uppercase w-full p-2'>Next</button>
                             <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
@@ -56,4 +85,4 @@ const cuffs = () => {
   )
 }
 
-export default cuffs
+export default Cuffs

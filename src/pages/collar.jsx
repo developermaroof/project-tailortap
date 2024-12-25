@@ -1,10 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import Nav from "../components/nav"
-import Collar from "../assets/collar.png"
-import { Link } from'react-router-dom';
-const collar = () => {
+import CollarLogo from "../assets/collar.png"
+
+const Collar = () => {
+    const [collar, setCollar] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const clientId = location.state?.clientId;
+        if (!clientId) {
+            navigate("/clientdetails");
+        }
+    }, [location, navigate]);
+    
+    const handleSaveCollar = () => {
+        const clientId = location.state.clientId;
+        const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
+        const updatedClients = getClientData.map(client => {
+            if (client.id === clientId) {
+                return {...client, collar };
+            }
+            return client;
+        });
+        
+        localStorage.setItem("client", JSON.stringify(updatedClients));
+        navigate("/measurements/chest", { state: { clientId } });
+    };
+
   return (
     <div className='mx-auto max-w-sm'>
         <div className='m-4'>
@@ -31,16 +57,19 @@ const collar = () => {
                             <p className='font-bold font-inner text-white uppercase cursor-pointer bg-themeColor rounded-sm text-center w-[120px] p-2'>Collar</p>
                         </div>
                         <div className='h-[280px]'>
-                            <img src={Collar} alt="armsvector" className='w-[280px]'/>
+                            <img src={CollarLogo} alt="armsvector" className='w-[280px]'/>
                         </div>
                     </div>
 
                     <div className='flex flex-col gap-4'>
                         <div>
-                            <input type="text" placeholder='Enter Collar' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
+                            <input
+                                value={collar}
+                                onChange={(e) => setCollar(e.target.value)}
+                                type="text" placeholder='Enter Collar' className='text-sm border-themeColor border-[1px] rounded-md w-full p-3'/>
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <button className='font-bold uppercase font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-2'> <Link to="/measurements/chest">Next</Link></button>
+                            <button onClick={handleSaveCollar} className='font-bold uppercase font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-2'>Next</button>
                             <button className='font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2'>Skip</button>
                         </div>
                     </div>
@@ -52,4 +81,4 @@ const collar = () => {
   )
 }
 
-export default collar
+export default Collar
