@@ -13,12 +13,11 @@ const SignUp = () => {
 
   const [data, setData] = useState(UserDetails);
   const [isChecked, setIsChecked] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
+    const { name, value } = event.target;
     setData({ ...data, [name]: value });
   };
 
@@ -26,34 +25,43 @@ const SignUp = () => {
     setIsChecked(event.target.checked);
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!data.firstname.trim()) {
+      newErrors.firstname = "First name is required";
+    }
+    if (!data.lastname.trim()) {
+      newErrors.lastname = "Last name is required";
+    }
+    if (!data.email.trim()) {
+      newErrors.email = "Email is required";
+    }
+    if (!data.number.trim()) {
+      newErrors.number = "Phone number is required";
+    }
+    if (!data.password.trim()) {
+      newErrors.password = "Password is required";
+    }
+    if (!isChecked) {
+      newErrors.checkbox = "You must agree to the privacy policy";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (
-      data.firstname === "" ||
-      data.lastname === "" ||
-      data.email === "" ||
-      data.number === "" ||
-      data.password === ""
-    ) {
-      alert("Please fill all the fields");
-      return;
+    if (validateForm()) {
+      const getData = JSON.parse(localStorage.getItem("user") || "[]");
+      let arr = [...getData];
+      arr.push(data);
+      localStorage.setItem("user", JSON.stringify(arr));
+
+      navigate("/login");
     }
-
-    if (!isChecked) {
-      alert("You must agree to the privacy policy");
-      return;
-    }
-
-    const getData = JSON.parse(localStorage.getItem("user") || "[]");
-
-    let arr = [...getData];
-    arr.push(data);
-
-    localStorage.setItem("user", JSON.stringify(arr));
-
-    alert("Signed Up Successfully!");
-    navigate("/login");
   };
 
   return (
@@ -75,45 +83,70 @@ const SignUp = () => {
 
           {/* Name Inputs */}
           <div className="flex w-[250px] gap-3 mt-12">
-            <input
-              onChange={handleInput}
-              type="text"
-              name="firstname"
-              placeholder="First Name"
-              className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px] w-[118px]"
-            />
-            <input
-              onChange={handleInput}
-              type="text"
-              name="lastname"
-              placeholder="Last Name"
-              className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px] w-[118px]"
-            />
+            <div className="flex flex-col w-[118px]">
+              <input
+                onChange={handleInput}
+                type="text"
+                name="firstname"
+                placeholder="First Name"
+                className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px]"
+              />
+              {errors.firstname && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstname}</p>
+              )}
+            </div>
+            <div className="flex flex-col w-[118px]">
+              <input
+                onChange={handleInput}
+                type="text"
+                name="lastname"
+                placeholder="Last Name"
+                className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px]"
+              />
+              {errors.lastname && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastname}</p>
+              )}
+            </div>
           </div>
 
           {/* Email, Phone, Password Inputs */}
           <div className="p-2 mt-2 flex flex-col justify-center items-center gap-4">
-            <input
-              onChange={handleInput}
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px] w-[250px]"
-            />
-            <input
-              onChange={handleInput}
-              type="number"
-              name="number"
-              placeholder="Phone Number"
-              className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px] w-[250px]"
-            />
-            <input
-              onChange={handleInput}
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px] w-[250px]"
-            />
+            <div className="flex flex-col w-[250px]">
+              <input
+                onChange={handleInput}
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px]"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+            <div className="flex flex-col w-[250px]">
+              <input
+                onChange={handleInput}
+                type="number"
+                name="number"
+                placeholder="Phone Number"
+                className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px]"
+              />
+              {errors.number && (
+                <p className="text-red-500 text-xs mt-1">{errors.number}</p>
+              )}
+            </div>
+            <div className="flex flex-col w-[250px]">
+              <input
+                onChange={handleInput}
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="border-[1px] p-2 pl-4 text-sm border-green-600 rounded-[50px]"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
           </div>
 
           {/* Checkbox */}
@@ -124,11 +157,17 @@ const SignUp = () => {
               <span className="text-red-600">policy</span>?
             </p>
           </div>
+          {errors.checkbox && (
+            <p className="text-red-500 text-xs mt-1">{errors.checkbox}</p>
+          )}
         </div>
 
         {/* Submit Button */}
         <div className="mt-4 flex justify-center">
-          <button className="font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-[50px] w-[250px] p-2">
+          <button
+            type="submit"
+            className="font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-[50px] w-[250px] p-2"
+          >
             Sign up
           </button>
         </div>
