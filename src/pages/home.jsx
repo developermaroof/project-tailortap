@@ -24,7 +24,7 @@ const Home = () => {
   }
 
   return (
-    <div className='mx-auto max-w-sm'>
+    <div className='mx-auto max-w-xs h-[90vh] overflow-y-scroll'>
       <div className='relative'>
         <div onClick={toggleModel} className='absolute top-0 right-5 bg-black rounded-full p-[2px] cursor-pointer'>
           <img src={Video} alt="" className='w-[22px] h-[22px]'/>

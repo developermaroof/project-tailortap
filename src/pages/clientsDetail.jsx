@@ -45,13 +45,13 @@ const handleSubmit = (event) => {
 };
 
   return (
-    <div className='mx-auto max-w-sm'>
+    <div className='mx-auto max-w-xs h-[90vh] overflow-y-scroll'>
       {/*  */}
       <div className='relative'>
-        <div className='absolute top-0 right-5 bg-black rounded-full p-[2px]'>
+        <div className='absolute top-5 right-5 bg-black rounded-full p-[2px]'>
           <img src={Video} alt="" className='w-[22px] h-[22px]'/>
         </div>
-        <div className='absolute top-0 left-5'>
+        <div className='absolute top-5 left-5'>
             <FaAngleLeft className='w-[22px] h-[22px]'/>
         </div>
       </div>

@@ -52,7 +52,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className='flex flex-col justify-center items-center m-4 py-2 mx-auto max-w-sm'>
+        <div className='flex flex-col h-[90vh] overflow-y-scroll justify-center items-center m-4 py-2 mx-auto max-w-xs'>
             <div className='mt-20'>
                 <img src={Logo} alt="Logo" />
             </div>

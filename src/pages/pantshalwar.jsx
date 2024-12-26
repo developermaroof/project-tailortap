@@ -33,7 +33,7 @@ const PantShalwar = () => {
     };
 
   return (
-    <div className='mx-auto max-w-sm'>
+    <div className='mx-auto max-w-xs h-[90vh] overflow-y-scroll'>
         <div className='m-4'>
             {/*  */}
             <div className='pb-1 pt-16'>

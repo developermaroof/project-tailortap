@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const ThankYou = () => {
   return (
-        <div className='mx-auto max-w-sm bg-themeColor h-[100vh]'>
+        <div className='mx-auto max-w-xs bg-themeColor h-[90vh] overflow-y-scroll'>
             <div className='mx-4'>
                 {/*  */}
                 <div className='pb-1 pt-16 flex flex-col gap-32'>

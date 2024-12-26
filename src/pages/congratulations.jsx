@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Congratulations = () => {
   return (
-    <div className='mx-auto max-w-sm bg-themeColor h-[100vh] flex'>
+    <div className='mx-auto max-w-xs bg-themeColor h-[100vh] flex h-[90vh] overflow-y-scroll'>
         <div className='mx-4 flex flex-col gap-20 justify-center items-center text-center'>
             <div className='flex flex-col gap-4'>
                 <p className='text-[70px]'>🎉</p>

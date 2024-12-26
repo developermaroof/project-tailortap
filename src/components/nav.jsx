@@ -11,7 +11,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 w-full z-50 mx-auto max-w-sm">
+    <nav className="fixed bottom-0 w-full z-50 mx-auto max-w-xs">
       <div>
         {/* Nav Inner */}
         <div className="w-full px-8 bg-black h-[60px] flex justify-between items-center text-white">

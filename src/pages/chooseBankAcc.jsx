@@ -13,7 +13,7 @@ const ChooseBankAcc = () => {
   };
 
   return (
-    <div className='mx-auto max-w-sm'>
+    <div className='mx-auto max-w-xs h-[90vh] overflow-y-scroll'>
       <div>
         <div className='relative'>
           <div className='absolute top-5 right-5 bg-green-500 rounded-full p-1'>

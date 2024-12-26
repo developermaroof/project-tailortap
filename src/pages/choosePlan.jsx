@@ -11,7 +11,7 @@ const ChoosePlan = () => {
   };
 
   return ( 
-    <div className='mx-auto max-w-sm'>
+    <div className='mx-auto max-w-xs h-[90vh] overflow-y-scroll'>
         {/* Close Icon Section */}
         <div>
             <div className='relative bg-themeColor rounded-b-[40px] py-10'>
