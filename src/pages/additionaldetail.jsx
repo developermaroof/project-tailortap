@@ -25,7 +25,6 @@ const AdditionalDetails = () => {
       }
       return client;
     });
-
     localStorage.setItem("client", JSON.stringify(updatedClients));
     navigate("/congratulations", { state: { clientId } });
   };

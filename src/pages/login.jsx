@@ -34,7 +34,7 @@ const Login = () => {
       );
 
       if (matchedUser) {
-        navigate("/home");
+        navigate("/homepage");
       } else {
         setErrors({ form: "Invalid email or password" });
       }

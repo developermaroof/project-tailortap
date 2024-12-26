@@ -18,7 +18,7 @@ const ThankYou = () => {
               </p>
             </div>
             <button className="bg-white w-full rounded-[4px] p-3 text-themeColor font-bold font-poppins">
-              <Link to="/home">OK</Link>
+              <Link to="/homepage">OK</Link>
             </button>
           </div>
         </div>
