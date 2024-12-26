@@ -24,7 +24,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative max-w-xs mx-auto">
         <div
           onClick={toggleModel}
           className="absolute top-5 right-5 bg-black rounded-full p-[2px] cursor-pointer"
@@ -107,7 +107,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Nav />
+      <div className="max-w-xs mx-auto">
+        <Nav />
+      </div>
     </>
   );
 };
