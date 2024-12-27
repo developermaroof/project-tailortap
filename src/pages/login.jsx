@@ -42,7 +42,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col   w-full overflow-auto justify-center items-center m-4 py-2 mx-auto max-w-xs">
+    <div className="flex flex-col w-full h-[100vh] border-2 overflow-auto justify-center items-center mx-4 py-2 mx-auto max-w-xs">
       <div className="mt-20">
         <img src={Logo} alt="Logo" />
       </div>

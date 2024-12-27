@@ -17,7 +17,7 @@ const ChoosePlan = () => {
           <IoMdClose />
         </div>
       </div>
-      <div className="mx-auto w-full overflow-auto max-w-xs">
+      <div className="mx-auto border-2 w-full h-[100vh] overflow-auto max-w-xs">
         {/* Close Icon Section */}
         <div>
           <div className="bg-themeColor rounded-b-[40px] py-10">
@@ -34,7 +34,7 @@ const ChoosePlan = () => {
           </div>
         </div>
         {/* Plan Selection Section */}
-        <div className="m-4">
+        <div className="m-4 flex flex-col justify-center ">
           <div className="pb-1 pt-16 uppercase">
             <div className="flex flex-col text-xl justify-center items-center font-bold font-poppins">
               <h1>Choose your plan:</h1>

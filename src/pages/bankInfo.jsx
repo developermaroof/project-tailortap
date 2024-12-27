@@ -47,7 +47,7 @@ const BankInfo = () => {
           <IoMdClose />
         </div>
       </div>
-      <div className="mx-auto   w-full overflow-auto max-w-xs">
+      <div className="mx-auto flex flex-col justify-center h-[100vh]  w-full overflow-auto max-w-xs">
         <form onSubmit={handleSubmit} className="m-4">
           {/* Header */}
           <div className="pb-1 pt-16">

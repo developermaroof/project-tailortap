@@ -19,7 +19,7 @@ const ChooseBankAcc = () => {
           <IoMdClose />
         </div>
       </div>
-      <div className="mx-auto   w-full overflow-auto max-w-xs">
+      <div className="mx-auto  flex flex-col justify-center border-2 h-[100vh] w-full overflow-auto max-w-xs">
         <div className="m-4">
           {/* Header */}
           <div className="pb-1 pt-16 uppercase">

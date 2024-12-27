@@ -11,7 +11,7 @@ const ChooseLang = () => {
 
   return (
     <>
-      <div className="mx-auto  w-full overflow-auto  max-w-xs">
+      <div className="mx-auto h-[100vh] border-2 flex flex-col justify-center w-full overflow-auto max-w-xs">
         <div className="mx-4 pt-10">
           <div className="flex flex-col justify-center items-center">
             <h1 className="font-bold font-poppins uppercase leading-tight tracking-wide">

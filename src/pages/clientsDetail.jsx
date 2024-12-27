@@ -56,7 +56,7 @@ const ClientDetail = () => {
           <FaAngleLeft className="w-[22px] h-[22px]" />
         </div>
       </div>
-      <div className="mx-auto max-w-xs h-[92vh] overflow-auto">
+      <div className="mx-auto max-w-xs h-[92vh] border-2 flex flex-col justify-center w-full overflow-auto">
         <div className="mx-4 pt-6">
           <div className="flex flex-col gap-14">
             <div className="flex flex-col mt-20 justify-center">
