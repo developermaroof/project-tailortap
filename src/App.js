@@ -20,6 +20,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChooseBankAcc from "./pages/chooseBankAcc";
 import BankInfo from "./pages/bankInfo";
 import ThankYou from "./pages/thankyou";
+import Search from "./pages/search";
+import Nav from "./components/nav";
 
 function App() {
   return (
@@ -28,27 +30,138 @@ function App() {
         <Route path="/" element={<ChooseLang />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/homepage" element={<Home />} />
-        <Route path="/clientdetails" element={<ClientDetails />} />
-        <Route path="/measurements/length" element={<Length />} />
-        <Route path="/measurements/shoulder" element={<Shoulder />} />
-        <Route path="/measurements/arms" element={<Arms />} />
-        <Route path="/measurements/cuffs" element={<Cuffs />} />
-        <Route path="/measurements/collar" element={<Collar />} />
-        <Route path="/measurements/chest" element={<Chest />} />
-        <Route path="/measurements/fitting" element={<Fitting />} />
-        <Route path="/measurements/lap" element={<Lap />} />
-        <Route path="/measurements/pantshalwar" element={<PantShalwar />} />
-        <Route path="/measurements/paincha" element={<Paincha />} />
+        <Route
+          path="/homepage"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Home />
+              <Nav />
+            </div>
+          }
+        />
+
+        <Route
+          path="/clientdetails"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <ClientDetails />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/length"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Length />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/shoulder"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Shoulder />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/arms"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Arms />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/cuffs"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Cuffs />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/collar"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Collar />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/chest"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Chest />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/fitting"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Fitting />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/lap"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Lap />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/pantshalwar"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <PantShalwar />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/measurements/paincha"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Paincha />
+              <Nav />
+            </div>
+          }
+        />
         <Route
           path="/measurements/additionaldetails"
-          element={<AdditionalDetails />}
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <AdditionalDetails />
+              <Nav />
+            </div>
+          }
         />
         <Route path="/congratulations" element={<Congratulations />} />
         <Route path="/chooseplan" element={<ChoosePlan />} />
         <Route path="/choosebankacc" element={<ChooseBankAcc />} />
         <Route path="/bankinfo" element={<BankInfo />} />
         <Route path="/thankyou" element={<ThankYou />} />
+        <Route
+          path="/search"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Search />
+              <Nav />
+            </div>
+          }
+        />
       </Routes>
     </Router>
   );

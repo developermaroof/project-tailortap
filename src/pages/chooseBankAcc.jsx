@@ -14,12 +14,12 @@ const ChooseBankAcc = () => {
 
   return (
     <>
-      <div className="relative">
-        <div className="absolute top-0 right-5 bg-green-500 rounded-full p-1">
+      <div className="relative max-w-xs mx-auto w-full">
+        <div className="absolute top-5 right-5 bg-green-500 rounded-full p-1">
           <IoMdClose />
         </div>
       </div>
-      <div className="mx-auto max-w-xs">
+      <div className="mx-auto   w-full overflow-auto max-w-xs">
         <div className="m-4">
           {/* Header */}
           <div className="pb-1 pt-16 uppercase">

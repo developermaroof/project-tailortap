@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Video from "../assets/video.png";
-import Nav from "../components/nav";
 import NoClients from "../assets/noclients.png";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -9,25 +8,24 @@ import ModelImg from "../assets/modelimg.png";
 
 const Home = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
-  //
+
   const [clientData, setClientData] = useState([]);
 
-  // Fetch client data from local storage
   useEffect(() => {
     const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
     setClientData(getClientData);
   }, []);
-  //
+
   const toggleModel = () => {
     setIsModelOpen(!isModelOpen);
   };
 
   return (
     <>
-      <div className="relative max-w-xs mx-auto">
+      <div className="relative max-w-xs mx-auto w-full">
         <div
           onClick={toggleModel}
-          className="absolute top-5 right-5 bg-black rounded-full p-[2px] cursor-pointer"
+          className="absolute top-5 right-5 bg-black rounded-full p-[2px]"
         >
           <img src={Video} alt="" className="w-[22px] h-[22px]" />
         </div>
@@ -35,12 +33,12 @@ const Home = () => {
           <FaAngleLeft className="w-[22px] h-[22px]" />
         </div>
       </div>
-      <div className="mx-auto h-[88vh] overflow-auto max-w-xs">
-        <div className="m-4">
-          <div className="pb-1 pt-16">
+      <div className="mx-auto h-[92vh] overflow-auto max-w-xs">
+        <div className="mx-4">
+          <div className="pt-6">
             {/* Model */}
             {isModelOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+              <div className="fixed max-w-xs mx-auto inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white mx-6 p-8 rounded-lg max-w-sm w-full shadow-lg relative">
                   <div
                     className="absolute top-5 right-5 text-white bg-themeColor rounded-full p-1 cursor-pointer"
@@ -106,9 +104,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="max-w-xs mx-auto">
-        <Nav />
       </div>
     </>
   );
