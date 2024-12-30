@@ -22,6 +22,8 @@ import BankInfo from "./pages/bankInfo";
 import ThankYou from "./pages/thankyou";
 import Search from "./pages/search";
 import Nav from "./components/nav";
+import ClientsData from "./pages/clientsData";
+import Upload from "./pages/upload";
 
 function App() {
   return (
@@ -158,6 +160,24 @@ function App() {
           element={
             <div className="flex flex-col items-center justify-center">
               <Search />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/search/clientsdata"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <ClientsData />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
+          path="/search/upload"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Upload />
               <Nav />
             </div>
           }
