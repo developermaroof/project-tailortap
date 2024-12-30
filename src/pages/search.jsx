@@ -31,7 +31,7 @@ const Search = () => {
           <FaAngleLeft className="w-[22px] h-[22px]" />
         </div>
       </div>
-      <div className="mx-auto h-[92vh] overflow-auto max-w-xs w-full ">
+      <div className="mx-auto h-[92vh] border-2 overflow-auto max-w-xs w-full ">
         <div className="mx-4 pt-14">
           <div className="flex bg-gray-300 justify-center items-center p-3 px-4 rounded-[30px] gap-5 text-gray-600">
             <FaSearch />

@@ -35,7 +35,7 @@ const Upload = () => {
           <FaAngleLeft className="w-[22px] h-[22px]" />
         </div>
       </div>
-      <div className="mx-auto h-[92vh] overflow-auto max-w-xs w-full ">
+      <div className="mx-auto h-[92vh] border-2 overflow-auto max-w-xs w-full ">
         <div className="mx-4 pt-14">
           {/*  */}
           <div className="border-y-[1px] border-gray-300 text-[12px] mt-4 p-2 flex justify-between items-center">
