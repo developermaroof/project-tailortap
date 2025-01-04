@@ -91,7 +91,7 @@ const ClientsData = () => {
               </div>
             </div>
             <button className="font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2 mt-6">
-              <Link to="/search/upload">Next</Link>
+              <Link to="/search">Save Changes</Link>
             </button>
           </div>
           {/*  */}

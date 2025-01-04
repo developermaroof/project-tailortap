@@ -142,6 +142,15 @@ function App() {
           }
         />
         <Route
+          path="/measurements/upload"
+          element={
+            <div className="flex flex-col items-center justify-center">
+              <Upload />
+              <Nav />
+            </div>
+          }
+        />
+        <Route
           path="/measurements/additionaldetails"
           element={
             <div className="flex flex-col items-center justify-center">
@@ -169,15 +178,6 @@ function App() {
           element={
             <div className="flex flex-col items-center justify-center">
               <ClientsData />
-              <Nav />
-            </div>
-          }
-        />
-        <Route
-          path="/search/upload"
-          element={
-            <div className="flex flex-col items-center justify-center">
-              <Upload />
               <Nav />
             </div>
           }

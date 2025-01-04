@@ -28,7 +28,7 @@ const Paincha = () => {
     });
 
     localStorage.setItem("client", JSON.stringify(updatedClients));
-    navigate("/measurements/additionaldetails", { state: { clientId } });
+    navigate("/measurements/upload", { state: { clientId } });
   };
 
   return (

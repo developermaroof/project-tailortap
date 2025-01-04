@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Video from "../assets/video.png";
+import NoClients from "../assets/noclients.png";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -62,6 +63,7 @@ const Search = () => {
               </div>
             ) : (
               <div className="flex flex-col justify-center relative items-center text-center">
+                <img src={NoClients} alt="" className="w-full h-full" />
                 <p className="text-gray-400 absolute bottom-2">
                   No Client has been created yet..
                 </p>
