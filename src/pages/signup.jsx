@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
 
 const SignUp = () => {
-  const UserDetails = {
+  const [data, setData] = useState({
     firstname: "",
     lastname: "",
     email: "",
     number: "",
     password: "",
-  };
-
-  const [data, setData] = useState(UserDetails);
+  });
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
 
   const handleInput = (event) => {
@@ -51,16 +51,22 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (validateForm()) {
-      const getData = JSON.parse(localStorage.getItem("user") || "[]");
-      let arr = [...getData];
-      arr.push(data);
-      localStorage.setItem("user", JSON.stringify(arr));
+    if (!validateForm()) return;
 
-      navigate("/login");
+    setIsRegistering(true);
+    setErrors({});
+
+    try {
+      await doCreateUserWithEmailAndPassword(data.email, data.password);
+      navigate("/homepage");
+    } catch (error) {
+      console.error("SignUp Error:", error.message);
+      setErrors({ form: error.message || "Failed to create user" });
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -166,9 +172,10 @@ const SignUp = () => {
         <div className="mt-4 flex justify-center">
           <button
             type="submit"
+            disabled={isRegistering}
             className="font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-[50px] w-[250px] p-2"
           >
-            Sign up
+            {isRegistering ? "Signing Up..." : "Sign Up"}
           </button>
         </div>
       </form>

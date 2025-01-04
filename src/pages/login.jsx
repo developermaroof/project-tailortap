@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import { doSignInWithEmailAndPassword } from "../firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const navigate = useNavigate();
 
   const handleInput = (event) => {
@@ -22,22 +24,26 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (validateForm()) {
-      let getUserDetails = JSON.parse(localStorage.getItem("user")) || [];
+    if (!validateForm()) return;
 
-      // Find a matching user
-      let matchedUser = getUserDetails.find(
-        (user) => user.email === email && user.password === password
+    setIsSigningIn(true);
+    setErrors({});
+
+    try {
+      const userCredential = await doSignInWithEmailAndPassword(
+        email,
+        password
       );
-
-      if (matchedUser) {
-        navigate("/homepage");
-      } else {
-        setErrors({ form: "Invalid email or password" });
-      }
+      console.log("User logged in successfully:", userCredential.user);
+      navigate("/homepage");
+    } catch (error) {
+      console.error("Login Error:", error.message);
+      setErrors({ form: error.message || "Invalid email or password" });
+    } finally {
+      setIsSigningIn(false);
     }
   };
 
@@ -97,9 +103,10 @@ const Login = () => {
         <div className="mt-4">
           <button
             type="submit"
+            disabled={isSigningIn}
             className="font-bold font-poppins text-white cursor-pointer bg-themeColor rounded-[50px] w-[250px] p-2"
           >
-            Log in
+            {isSigningIn ? "Logging In..." : "Log In"}
           </button>
         </div>
       </form>
