@@ -5,31 +5,31 @@ import { FaAngleLeft } from "react-icons/fa6";
 import ArmsLogo from "../assets/arms.png";
 import armsright from "../assets/armsright.png";
 import armsleft from "../assets/armsleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Arms = () => {
-  const [arms, setArms] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveArms = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, arms };
-      }
-      return client;
-    });
+    updateClient(clientId);
 
-    localStorage.setItem("client", JSON.stringify(updatedClients));
-    navigate("/measurements/cuffs", { state: { clientId } });
+    navigate("/measurements/cuffs", {
+      state: { clientId },
+    });
   };
 
   return (
@@ -70,8 +70,10 @@ const Arms = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={arms}
-                  onChange={(e) => setArms(e.target.value)}
+                  value={clientData.measurements.arms || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("arms", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Arms"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

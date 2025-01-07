@@ -4,30 +4,27 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import PantShalwarLogo from "../assets/pantshalwar.png";
 import pantshalwarupdown from "../assets/lengthupdown.png";
+import { useClient } from "../contexts/clientContext";
 
 const PantShalwar = () => {
-  const [pantShalwar, setPantShalwar] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSavePantShalwar = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, pantShalwar };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/paincha", { state: { clientId } });
   };
 
@@ -70,8 +67,10 @@ const PantShalwar = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={pantShalwar}
-                  onChange={(e) => setPantShalwar(e.target.value)}
+                  value={clientData.measurements.pantshalwar || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("pantshalwar", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Pant / Shalwar"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

@@ -1,49 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Video from "../assets/video.png";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useClient } from "../contexts/clientContext";
 
 const ClientDetail = () => {
-  const ClientDetails = {
-    fullname: "",
-    cast: "",
-    number: "",
-    address: "",
-  };
-
-  const [clientData, setClientData] = useState(ClientDetails);
+  const { clientData, handleInput, addClient } = useClient();
   const navigate = useNavigate();
 
-  const handleInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setClientData({ ...clientData, [name]: value });
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (
-      clientData.fullname === "" ||
-      clientData.cast === "" ||
-      clientData.number === ""
-    ) {
-      alert("Please fill all the required fields");
-      return;
+    const clientId = await addClient();
+    if (clientId) {
+      navigate("/measurements/length", { state: { clientId } });
     }
-
-    const clientWithId = { ...clientData, id: uuidv4() };
-
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-
-    let arr = [...getClientData];
-    arr.push(clientWithId);
-
-    localStorage.setItem("client", JSON.stringify(arr));
-
-    navigate("/measurements/length", { state: { clientId: clientWithId.id } });
   };
 
   return (
@@ -71,6 +41,7 @@ const ClientDetail = () => {
                     onChange={handleInput}
                     type="text"
                     name="fullname"
+                    value={clientData.fullname}
                     className="border-themeColor border-[2px] rounded-md w-full p-2"
                   />
                 </div>
@@ -78,6 +49,7 @@ const ClientDetail = () => {
                   <label htmlFor="cast">Cast</label>
                   <input
                     onChange={handleInput}
+                    value={clientData.cast}
                     type="text"
                     name="cast"
                     className="border-themeColor border-[2px] rounded-md w-full p-2"
@@ -87,6 +59,7 @@ const ClientDetail = () => {
                   <label htmlFor="number">Phone Number*</label>
                   <input
                     onChange={handleInput}
+                    value={clientData.number}
                     type="number"
                     name="number"
                     className="border-themeColor border-[2px] rounded-md w-full p-2"
@@ -98,6 +71,7 @@ const ClientDetail = () => {
                   </label>
                   <input
                     onChange={handleInput}
+                    value={clientData.address}
                     type="text"
                     name="address"
                     className="border-themeColor border-[2px] rounded-md w-full p-2"

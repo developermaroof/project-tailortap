@@ -2,29 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useClient } from "../contexts/clientContext";
 
 const AdditionalDetails = () => {
-  const [additionalDetails, setAdditionalDetails] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveAdditionalDetails = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, additionalDetails };
-      }
-      return client;
-    });
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/congratulations", { state: { clientId } });
   };
 
@@ -53,8 +51,10 @@ const AdditionalDetails = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <textarea
-                  value={additionalDetails}
-                  onChange={(e) => setAdditionalDetails(e.target.value)}
+                  value={clientData.measurements.additionalDetails || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("additionalDetails", e.target.value)
+                  }
                   name=""
                   id=""
                   rows={6}

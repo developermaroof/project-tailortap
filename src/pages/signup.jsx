@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
+const db = getFirestore();
 
 const SignUp = () => {
   const [data, setData] = useState({
@@ -60,7 +63,20 @@ const SignUp = () => {
     setErrors({});
 
     try {
-      await doCreateUserWithEmailAndPassword(data.email, data.password);
+      const user = await doCreateUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+
+      await setDoc(doc(db, "users", user.uid), {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        number: data.number,
+        uid: user.uid,
+        createdAt: new Date(),
+      });
+
       navigate("/homepage");
     } catch (error) {
       console.error("SignUp Error:", error.message);

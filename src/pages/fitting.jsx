@@ -5,30 +5,27 @@ import { FaAngleLeft } from "react-icons/fa6";
 import FittingLogo from "../assets/fitting.png";
 import fittingright from "../assets/fittingright.png";
 import fittingleft from "../assets/fittingleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Fitting = () => {
-  const [fitting, setFitting] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveFitting = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, fitting };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/lap", { state: { clientId } });
   };
 
@@ -74,8 +71,10 @@ const Fitting = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={fitting}
-                  onChange={(e) => setFitting(e.target.value)}
+                  value={clientData.measurements.fitting || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("fitting", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Fitting"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

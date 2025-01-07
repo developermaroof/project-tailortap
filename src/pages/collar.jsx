@@ -3,30 +3,27 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import CollarLogo from "../assets/collar.png";
+import { useClient } from "../contexts/clientContext";
 
 const Collar = () => {
-  const [collar, setCollar] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveCollar = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, collar };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/chest", { state: { clientId } });
   };
 
@@ -62,8 +59,10 @@ const Collar = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={collar}
-                  onChange={(e) => setCollar(e.target.value)}
+                  value={clientData.measurements.collar || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("collar", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Collar"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

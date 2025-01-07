@@ -4,31 +4,32 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import ShoulderLogo from "../assets/shoulder.png";
 import shoulderrightleft from "../assets/shoulderrightleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Shoulder = () => {
-  const [shoulder, setShoulder] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveShoulder = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, shoulder };
-      }
-      return client;
-    });
 
-    localStorage.setItem("client", JSON.stringify(updatedClients));
-    navigate("/measurements/arms", { state: { clientId } });
+    updateClient(clientId);
+
+    navigate("/measurements/arms", {
+      state: { clientId },
+    });
   };
 
   return (
@@ -70,8 +71,10 @@ const Shoulder = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={shoulder}
-                  onChange={(e) => setShoulder(e.target.value)}
+                  value={clientData.measurements.shoulder || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("shoulder", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Shoulder"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

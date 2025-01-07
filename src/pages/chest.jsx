@@ -4,30 +4,27 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import ChestLogo from "../assets/shoulder.png";
 import chestrightleft from "../assets/shoulderrightleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Chest = () => {
-  const [chest, setChest] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveChest = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, chest };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/fitting", { state: { clientId } });
   };
 
@@ -66,8 +63,10 @@ const Chest = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={chest}
-                  onChange={(e) => setChest(e.target.value)}
+                  value={clientData.measurements.chest || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("chest", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Chest"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

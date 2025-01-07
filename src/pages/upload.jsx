@@ -80,19 +80,8 @@ const Upload = () => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto h-[92vh] border-2 overflow-auto max-w-xs w-full">
+      <div className="mx-auto h-[92vh] border-2 flex flex-col justify-center overflow-auto max-w-xs w-full">
         <div className="mx-4 pt-14">
-          {/* Client Info */}
-          <div className="border-y-[1px] border-gray-300 text-[12px] mt-4 p-2 flex justify-between items-center">
-            <div className="text-gray-600">
-              <p>Person’s Name</p>
-              <p>0334 567 7890</p>
-            </div>
-            <button className="bg-themeColor text-white rounded-[4px] px-4 py-[5px] font-bold">
-              Edit
-            </button>
-          </div>
-
           {/* Upload Section */}
           <div className="mt-10">
             <label className="shadow-md gap-3 mt-4 shadow-gray-400 rounded-md cursor-pointer flex flex-col justify-center items-center p-6 text-center">
@@ -132,7 +121,7 @@ const Upload = () => {
           </div>
 
           {/* Next Button */}
-          <div className="mt-10">
+          <div>
             <button
               onClick={handleSaveScreenshots}
               className="font-bold uppercase font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-2 mt-6"

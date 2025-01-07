@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import Lengthlogo from "../assets/length.png";
 import lengthupdown from "../assets/lengthupdown.png";
-import { Link } from "react-router-dom";
+import { useClient } from "../contexts/clientContext";
+
 const Length = () => {
-  const [length, setLength] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    if (!location.state?.clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveLength = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
 
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, length };
-      }
-      return client;
+    updateClient(clientId);
+
+    navigate("/measurements/shoulder", {
+      state: { clientId },
     });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
-    navigate("/measurements/shoulder", { state: { clientId } });
   };
 
   return (
@@ -70,8 +71,10 @@ const Length = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={length}
-                  onChange={(e) => setLength(e.target.value)}
+                  value={clientData.measurements.length || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("length", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Length"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
@@ -82,8 +85,7 @@ const Length = () => {
                   onClick={handleSaveLength}
                   className="font-bold font-poppins uppercase text-white cursor-pointer bg-themeColor rounded-md w-full p-2"
                 >
-                  {" "}
-                  <Link to="/measurements/shoulder">Next</Link>
+                  Next
                 </button>
                 <button className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2">
                   Skip

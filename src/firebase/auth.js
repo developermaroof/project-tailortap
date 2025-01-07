@@ -5,7 +5,12 @@ import {
 import { auth } from "./firebaseConfig";
 
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
-  return await createUserWithEmailAndPassword(auth, email, password);
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  return userCredential.user;
 };
 
 export const doSignInWithEmailAndPassword = async (email, password) => {

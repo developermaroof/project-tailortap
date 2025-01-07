@@ -4,30 +4,27 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import LapLogo from "../assets/length.png";
 import laparrow from "../assets/shoulderrightleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Lap = () => {
-  const [lap, setLap] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveLap = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, lap };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/pantshalwar", { state: { clientId } });
   };
 
@@ -66,8 +63,10 @@ const Lap = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={lap}
-                  onChange={(e) => setLap(e.target.value)}
+                  value={clientData.measurements.lap || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("lap", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Lap"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

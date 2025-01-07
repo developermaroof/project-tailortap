@@ -4,30 +4,28 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import CuffsLogo from "../assets/cuffs.png";
 import cuffsarrow from "../assets/cuffsarrow.png";
+import { useClient } from "../contexts/clientContext";
 
 const Cuffs = () => {
-  const [cuffs, setCuffs] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSaveCuffs = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, cuffs };
-      }
-      return client;
-    });
+    updateClient(clientId);
 
-    localStorage.setItem("client", JSON.stringify(updatedClients));
     navigate("/measurements/collar", { state: { clientId } });
   };
 
@@ -67,8 +65,10 @@ const Cuffs = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={cuffs}
-                  onChange={(e) => setCuffs(e.target.value)}
+                  value={clientData.measurements.cuffs || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("cuffs", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Cuffs"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"

@@ -4,30 +4,27 @@ import { IoMdClose } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import PainchaLogo from "../assets/pantshalwar.png";
 import painchaarrow from "../assets/shoulderrightleft.png";
+import { useClient } from "../contexts/clientContext";
 
 const Paincha = () => {
-  const [paincha, setPaincha] = useState("");
+  const { clientData, handleMeasurementInput, updateClient, getClient } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
 
   useEffect(() => {
-    const clientId = location.state?.clientId;
-    if (!clientId) {
+    if (location.state?.clientId && !isClientDataLoaded) {
+      getClient(location.state.clientId);
+      setIsClientDataLoaded(true);
+    } else if (!location.state?.clientId) {
       navigate("/clientdetails");
     }
-  }, [location, navigate]);
+  }, [location, navigate, getClient, isClientDataLoaded]);
 
   const handleSavePaincha = () => {
     const clientId = location.state.clientId;
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, paincha };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+    updateClient(clientId);
     navigate("/measurements/upload", { state: { clientId } });
   };
 
@@ -70,8 +67,10 @@ const Paincha = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <input
-                  value={paincha}
-                  onChange={(e) => setPaincha(e.target.value)}
+                  value={clientData.measurements.paincha || ""}
+                  onChange={(e) =>
+                    handleMeasurementInput("paincha", e.target.value)
+                  }
                   type="text"
                   placeholder="Enter Paincha"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
