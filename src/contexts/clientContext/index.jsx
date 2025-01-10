@@ -1,12 +1,22 @@
 import { createContext, useContext, useState } from "react";
 import { db } from "../../firebase/firebaseConfig";
-import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  getDocs,
+} from "firebase/firestore";
+import axios from "axios";
+import {
+  CLOUDINARY_UPLOAD_URL,
+  CLOUDINARY_UPLOAD_PRESET,
+} from "../../utils/cloudinaryConfig";
 
 const ClientContext = createContext();
 
-export const useClient = () => {
-  return useContext(ClientContext);
-};
+export const useClient = () => useContext(ClientContext);
 
 export const ClientProvider = ({ children, userId }) => {
   const [clientData, setClientData] = useState({
@@ -27,68 +37,46 @@ export const ClientProvider = ({ children, userId }) => {
       paincha: "",
       additionalDetails: "",
     },
+    images: [],
   });
 
-  const handleInput = (event) => {
-    const { name, value } = event.target;
+  const handleInput = (e) => {
+    const { name, value } = e.target;
     setClientData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleMeasurementInput = (name, value) => {
     setClientData((prev) => ({
       ...prev,
-      measurements: {
-        ...prev.measurements,
-        [name]: value,
-      },
+      measurements: { ...prev.measurements, [name]: value },
     }));
   };
 
   const addClient = async () => {
-    if (!userId) {
-      alert("User Id is Missing!");
-      return;
-    }
-
-    if (!clientData.fullname || !clientData.cast || !clientData.number) {
-      alert("Please fill all the required fields");
+    if (
+      !userId ||
+      !clientData.fullname ||
+      !clientData.cast ||
+      !clientData.number
+    ) {
+      alert("All required fields must be filled out!");
       return;
     }
 
     try {
       const clientRef = collection(db, `users/${userId}/clients`);
       const docRef = await addDoc(clientRef, clientData);
-      alert("Client added successfully with ID:", docRef.id);
-
-      setClientData({
-        fullname: "",
-        cast: "",
-        number: "",
-        address: "",
-        measurements: {
-          length: "",
-          shoulder: "",
-          arms: "",
-          cuffs: "",
-          collar: "",
-          chest: "",
-          fitting: "",
-          lap: "",
-          pantshalwar: "",
-          paincha: "",
-          additionalDetails: "",
-        },
-      });
-
+      alert(`Client added successfully with ID: ${docRef.id}`);
+      resetClientData();
       return docRef.id;
     } catch (error) {
-      alert("Couldn't add client", error.message);
+      alert(`Error adding client: ${error.message}`);
     }
   };
 
   const updateClient = async (clientId) => {
     if (!userId || !clientId) {
-      alert("User Id or Client Id is Missing!");
+      alert("User ID or Client ID is missing!");
       return;
     }
 
@@ -97,13 +85,13 @@ export const ClientProvider = ({ children, userId }) => {
       await updateDoc(clientRef, clientData);
       alert("Client updated successfully");
     } catch (error) {
-      alert("Couldn't update client", error.message);
+      alert(`Error updating client: ${error.message}`);
     }
   };
 
   const getClient = async (clientId) => {
     if (!userId || !clientId) {
-      alert("User Id or Client Id is Missing!");
+      alert("User ID or Client ID is missing!");
       return;
     }
 
@@ -112,23 +100,109 @@ export const ClientProvider = ({ children, userId }) => {
       const docSnap = await getDoc(clientRef);
       if (docSnap.exists()) {
         setClientData(docSnap.data());
+        return docSnap.data();
       } else {
-        alert("No such client!");
+        alert("No such client found!");
       }
     } catch (error) {
-      alert("Couldn't fetch client data", error.message);
+      alert(`Error fetching client data: ${error.message}`);
     }
+  };
+
+  const getAllClients = async () => {
+    if (!userId) {
+      alert("User ID is missing!");
+      return;
+    }
+
+    try {
+      const clientRef = collection(db, `users/${userId}/clients`);
+      const querySnapshot = await getDocs(clientRef);
+      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      alert(`Error fetching clients: ${error.message}`);
+    }
+  };
+
+  const uploadScreenshots = async (files) => {
+    try {
+      const uploadedImages = await Promise.all(
+        Array.from(files).map(async (file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+          const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+          return response.data.secure_url;
+        })
+      );
+      setClientData((prev) => ({
+        ...prev,
+        images: [...prev.images, ...uploadedImages],
+      }));
+    } catch (error) {
+      alert(`Error uploading images: ${error.message}`);
+    }
+  };
+
+  const saveScreenshots = async (clientId) => {
+    if (!userId || !clientId) {
+      alert("User ID or Client ID is missing!");
+      return;
+    }
+
+    try {
+      const clientRef = doc(db, `users/${userId}/clients`, clientId);
+      await updateDoc(clientRef, { images: clientData.images });
+      alert("Screenshots saved successfully!");
+    } catch (error) {
+      alert(`Error saving screenshots: ${error.message}`);
+    }
+  };
+
+  const removeScreenshot = (index) => {
+    setClientData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  const resetClientData = () => {
+    setClientData({
+      fullname: "",
+      cast: "",
+      number: "",
+      address: "",
+      measurements: {
+        length: "",
+        shoulder: "",
+        arms: "",
+        cuffs: "",
+        collar: "",
+        chest: "",
+        fitting: "",
+        lap: "",
+        pantshalwar: "",
+        paincha: "",
+        additionalDetails: "",
+      },
+      images: [],
+    });
   };
 
   return (
     <ClientContext.Provider
       value={{
         clientData,
-        handleMeasurementInput,
         handleInput,
+        handleMeasurementInput,
         addClient,
         updateClient,
         getClient,
+        uploadScreenshots,
+        saveScreenshots,
+        removeScreenshot,
+        getAllClients,
+        setClientData,
       }}
     >
       {children}

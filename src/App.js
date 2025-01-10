@@ -180,7 +180,7 @@ function App() {
             }
           />
           <Route
-            path="/search/clientsdata"
+            path="/search/clientsdata/:clientid"
             element={
               <div className="flex flex-col items-center justify-center">
                 <ClientsData />

@@ -1,77 +1,38 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Video from "../assets/video.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import ScreenShotPlaceholder from "../assets/uploadscreenshot.png";
 import { IoMdClose } from "react-icons/io";
+import { useClient } from "../contexts/clientContext";
 
 const Upload = () => {
-  const [isModelOpen, setIsModelOpen] = useState(false);
-  const [screenshots, setScreenshots] = useState([]); // Store multiple screenshots
+  const { clientData, uploadScreenshots, saveScreenshots, removeScreenshot } =
+    useClient();
   const location = useLocation();
   const navigate = useNavigate();
 
+  const clientId = location.state?.clientId;
+
   useEffect(() => {
-    const clientId = location.state?.clientId;
     if (!clientId) {
-      navigate("/clientdetails"); // Redirect if no clientId is present
+      navigate("/clientdetails");
     }
+  }, [clientId, navigate]);
 
-    // Fetch existing client data from local storage
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const client = getClientData.find((client) => client.id === clientId);
-    if (client?.images) {
-      setScreenshots(client.images); // Load existing images if available
-    }
-  }, [location, navigate]);
-
-  // Handle file upload for multiple images
-  const handleScreenshotUpload = (e) => {
-    const files = Array.from(e.target.files); // Handle multiple files
-    const newScreenshots = files.map((file) => URL.createObjectURL(file));
-
-    setScreenshots((prevScreenshots) => [
-      ...prevScreenshots,
-      ...newScreenshots,
-    ]);
+  const handleFileChange = (e) => {
+    uploadScreenshots(e.target.files);
   };
 
-  // Save screenshots to local storage
-  const handleSaveScreenshots = () => {
-    const clientId = location.state?.clientId;
-    if (!clientId) return;
-
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    const updatedClients = getClientData.map((client) => {
-      if (client.id === clientId) {
-        return { ...client, images: screenshots };
-      }
-      return client;
-    });
-
-    localStorage.setItem("client", JSON.stringify(updatedClients));
+  const handleSave = () => {
+    saveScreenshots(clientId);
     navigate("/measurements/additionaldetails", { state: { clientId } });
-  };
-
-  const toggleModel = () => {
-    setIsModelOpen(!isModelOpen);
-  };
-
-  // Remove an uploaded screenshot
-  const handleRemoveScreenshot = (index) => {
-    setScreenshots((prevScreenshots) =>
-      prevScreenshots.filter((_, i) => i !== index)
-    );
   };
 
   return (
     <>
-      {/* Header with Navigation Buttons */}
       <div className="relative max-w-xs mx-auto w-full">
-        <div
-          onClick={toggleModel}
-          className="absolute top-5 right-5 bg-black rounded-full p-[2px]"
-        >
+        <div className="absolute top-5 right-5 bg-black rounded-full p-[2px]">
           <img src={Video} alt="" className="w-[22px] h-[22px]" />
         </div>
         <div className="absolute top-5 left-5">
@@ -79,10 +40,8 @@ const Upload = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="mx-auto h-[92vh] border-2 flex flex-col justify-center overflow-auto max-w-xs w-full">
         <div className="mx-4 pt-14">
-          {/* Upload Section */}
           <div className="mt-10">
             <label className="shadow-md gap-3 mt-4 shadow-gray-400 rounded-md cursor-pointer flex flex-col justify-center items-center p-6 text-center">
               <img
@@ -95,15 +54,14 @@ const Upload = () => {
                 type="file"
                 accept="image/*"
                 multiple
-                onChange={handleScreenshotUpload}
+                onChange={handleFileChange}
                 className="hidden"
               />
             </label>
           </div>
 
-          {/* Display Uploaded Screenshots */}
           <div className="mt-10 flex flex-wrap gap-4">
-            {screenshots.map((screenshot, index) => (
+            {clientData.images.map((screenshot, index) => (
               <div key={index} className="relative">
                 <img
                   src={screenshot}
@@ -111,7 +69,7 @@ const Upload = () => {
                   className="p-2 bg-gray-300 w-[50px] h-[50px] object-cover rounded-md"
                 />
                 <div
-                  onClick={() => handleRemoveScreenshot(index)}
+                  onClick={() => removeScreenshot(index)}
                   className="absolute top-[-4px] right-[-4px] bg-black rounded-full p-[1px] text-[10px] text-white cursor-pointer"
                 >
                   <IoMdClose />
@@ -120,10 +78,9 @@ const Upload = () => {
             ))}
           </div>
 
-          {/* Next Button */}
           <div>
             <button
-              onClick={handleSaveScreenshots}
+              onClick={handleSave}
               className="font-bold uppercase font-poppins text-white cursor-pointer bg-themeColor rounded-md w-full p-2 mt-6"
             >
               Next
