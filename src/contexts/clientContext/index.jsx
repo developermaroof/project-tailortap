@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { db } from "../../firebase/firebaseConfig";
 import {
   collection,
@@ -19,26 +19,39 @@ const ClientContext = createContext();
 export const useClient = () => useContext(ClientContext);
 
 export const ClientProvider = ({ children, userId }) => {
-  const [clientData, setClientData] = useState({
-    fullname: "",
-    cast: "",
-    number: "",
-    address: "",
-    measurements: {
-      length: "",
-      shoulder: "",
-      arms: "",
-      cuffs: "",
-      collar: "",
-      chest: "",
-      fitting: "",
-      lap: "",
-      pantshalwar: "",
-      paincha: "",
-      additionalDetails: "",
-    },
-    images: [],
+  // Initialize clientData from localStorage
+  const [clientData, setClientData] = useState(() => {
+    const savedClientData = localStorage.getItem("clientData");
+    return savedClientData
+      ? JSON.parse(savedClientData)
+      : {
+          fullname: "",
+          cast: "",
+          number: "",
+          address: "",
+          measurements: {
+            length: "",
+            shoulder: "",
+            arms: "",
+            cuffs: "",
+            collar: "",
+            chest: "",
+            fitting: "",
+            lap: "",
+            pantshalwar: "",
+            paincha: "",
+            additionalDetails: "",
+          },
+          images: [],
+        };
   });
+
+  // Update localStorage whenever clientData changes
+  useEffect(() => {
+    if (clientData) {
+      localStorage.setItem("clientData", JSON.stringify(clientData));
+    }
+  }, [clientData]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -91,21 +104,24 @@ export const ClientProvider = ({ children, userId }) => {
 
   const getClient = async (clientId) => {
     if (!userId || !clientId) {
-      alert("User ID or Client ID is missing!");
-      return;
+      console.error("User ID or Client ID is missing!");
+      return null;
     }
 
     try {
       const clientRef = doc(db, `users/${userId}/clients`, clientId);
       const docSnap = await getDoc(clientRef);
       if (docSnap.exists()) {
-        setClientData(docSnap.data());
-        return docSnap.data();
+        const data = docSnap.data();
+        setClientData(data);
+        return data;
       } else {
-        alert("No such client found!");
+        console.warn("No client found for this ID:", clientId);
+        return null;
       }
     } catch (error) {
-      alert(`Error fetching client data: ${error.message}`);
+      console.error("Error fetching client data:", error);
+      return null;
     }
   };
 

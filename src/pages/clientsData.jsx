@@ -14,16 +14,18 @@ const ClientsData = () => {
     updateClient,
     handleMeasurementInput,
   } = useClient();
+  console.log(clientId);
+
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchClientData = async () => {
       if (clientId) {
-        const fetchedClientData = await getClient(clientId); // Make sure getClient works correctly.
+        const fetchedClientData = await getClient(clientId);
         if (fetchedClientData) {
-          setClientData(fetchedClientData); // Ensure this updates the state with client data.
+          setClientData(fetchedClientData);
         } else {
-          // Handle case when no data is found
-          console.log("No client data found for id:", clientId);
+          console.error("No client data found for this ID:", clientId);
         }
       }
     };
@@ -35,7 +37,7 @@ const ClientsData = () => {
       <div className="flex justify-center items-center">
         <p>No client data found for this ID.</p>
       </div>
-    ); // Show an error or fallback UI if no client data is found
+    );
   }
 
   const handleSaveChanges = () => {
