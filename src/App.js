@@ -16,7 +16,6 @@ import Paincha from "./pages/paincha";
 import AdditionalDetails from "./pages/additionaldetail";
 import Congratulations from "./pages/congratulations";
 import ChoosePlan from "./pages/choosePlan";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChooseBankAcc from "./pages/chooseBankAcc";
 import BankInfo from "./pages/bankInfo";
 import ThankYou from "./pages/thankyou";
@@ -24,6 +23,7 @@ import Search from "./pages/search";
 import Nav from "./components/nav";
 import ClientsData from "./pages/clientsData";
 import Upload from "./pages/upload";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ClientProvider } from "./contexts/clientContext";
 import { useAuth } from "./contexts/authContext";
 

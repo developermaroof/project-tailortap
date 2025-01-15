@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { db } from "../../firebase/firebaseConfig";
 import {
   collection,
@@ -13,45 +13,35 @@ import {
   CLOUDINARY_UPLOAD_URL,
   CLOUDINARY_UPLOAD_PRESET,
 } from "../../utils/cloudinaryConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ClientContext = createContext();
 
 export const useClient = () => useContext(ClientContext);
 
 export const ClientProvider = ({ children, userId }) => {
-  // Initialize clientData from localStorage
-  const [clientData, setClientData] = useState(() => {
-    const savedClientData = localStorage.getItem("clientData");
-    return savedClientData
-      ? JSON.parse(savedClientData)
-      : {
-          fullname: "",
-          cast: "",
-          number: "",
-          address: "",
-          measurements: {
-            length: "",
-            shoulder: "",
-            arms: "",
-            cuffs: "",
-            collar: "",
-            chest: "",
-            fitting: "",
-            lap: "",
-            pantshalwar: "",
-            paincha: "",
-            additionalDetails: "",
-          },
-          images: [],
-        };
+  const [clientData, setClientData] = useState({
+    fullname: "",
+    cast: "",
+    number: "",
+    address: "",
+    measurements: {
+      length: "",
+      shoulder: "",
+      arms: "",
+      cuffs: "",
+      collar: "",
+      chest: "",
+      fitting: "",
+      lap: "",
+      pantshalwar: "",
+      paincha: "",
+      additionalDetails: "",
+    },
+    images: [],
   });
-
-  // Update localStorage whenever clientData changes
-  useEffect(() => {
-    if (clientData) {
-      localStorage.setItem("clientData", JSON.stringify(clientData));
-    }
-  }, [clientData]);
+  const [loading, setLoading] = useState(false);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -72,42 +62,49 @@ export const ClientProvider = ({ children, userId }) => {
       !clientData.cast ||
       !clientData.number
     ) {
-      alert("All required fields must be filled out!");
+      toast.error("All required fields must be filled out!");
       return;
     }
 
+    setLoading(true);
     try {
       const clientRef = collection(db, `users/${userId}/clients`);
       const docRef = await addDoc(clientRef, clientData);
-      alert(`Client added successfully with ID: ${docRef.id}`);
+      toast.success(`Client added successfully with ID: ${docRef.id}`);
       resetClientData();
       return docRef.id;
     } catch (error) {
-      alert(`Error adding client: ${error.message}`);
+      toast.error(`Error adding client: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateClient = async (clientId) => {
     if (!userId || !clientId) {
-      alert("User ID or Client ID is missing!");
+      toast.error("User ID or Client ID is missing!");
       return;
     }
 
+    setLoading(true);
     try {
       const clientRef = doc(db, `users/${userId}/clients`, clientId);
       await updateDoc(clientRef, clientData);
-      alert("Client updated successfully");
+      toast.success("Client updated successfully");
     } catch (error) {
-      alert(`Error updating client: ${error.message}`);
+      toast.error(`Error updating client: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getClient = async (clientId) => {
     if (!userId || !clientId) {
-      console.error("User ID or Client ID is missing!");
+      toast.error("User ID or Client ID is missing!");
       return null;
     }
 
+    setLoading(true);
     try {
       const clientRef = doc(db, `users/${userId}/clients`, clientId);
       const docSnap = await getDoc(clientRef);
@@ -116,31 +113,38 @@ export const ClientProvider = ({ children, userId }) => {
         setClientData(data);
         return data;
       } else {
-        console.warn("No client found for this ID:", clientId);
+        toast.info("No client found for this ID");
         return null;
       }
     } catch (error) {
-      console.error("Error fetching client data:", error);
+      toast.error(`Error fetching client data: ${error.message}`);
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 
   const getAllClients = async () => {
     if (!userId) {
-      alert("User ID is missing!");
+      toast.error("User ID is missing!");
       return;
     }
 
+    setLoading(true);
     try {
       const clientRef = collection(db, `users/${userId}/clients`);
       const querySnapshot = await getDocs(clientRef);
+      toast.success("Clients fetched successfully");
       return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
-      alert(`Error fetching clients: ${error.message}`);
+      toast.error(`Error fetching clients: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const uploadScreenshots = async (files) => {
+    setLoading(true);
     try {
       const uploadedImages = await Promise.all(
         Array.from(files).map(async (file) => {
@@ -155,23 +159,29 @@ export const ClientProvider = ({ children, userId }) => {
         ...prev,
         images: [...prev.images, ...uploadedImages],
       }));
+      toast.success("Images uploaded successfully");
     } catch (error) {
-      alert(`Error uploading images: ${error.message}`);
+      toast.error(`Error uploading images: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const saveScreenshots = async (clientId) => {
     if (!userId || !clientId) {
-      alert("User ID or Client ID is missing!");
+      toast.error("User ID or Client ID is missing!");
       return;
     }
 
+    setLoading(true);
     try {
       const clientRef = doc(db, `users/${userId}/clients`, clientId);
       await updateDoc(clientRef, { images: clientData.images });
-      alert("Screenshots saved successfully!");
+      toast.success("Screenshots saved successfully!");
     } catch (error) {
-      alert(`Error saving screenshots: ${error.message}`);
+      toast.error(`Error saving screenshots: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -180,6 +190,7 @@ export const ClientProvider = ({ children, userId }) => {
       ...prev,
       images: prev.images.filter((_, i) => i !== index),
     }));
+    toast.info("Screenshot removed");
   };
 
   const resetClientData = () => {
@@ -209,6 +220,7 @@ export const ClientProvider = ({ children, userId }) => {
     <ClientContext.Provider
       value={{
         clientData,
+        loading,
         handleInput,
         handleMeasurementInput,
         addClient,
@@ -222,6 +234,7 @@ export const ClientProvider = ({ children, userId }) => {
       }}
     >
       {children}
+      <ToastContainer />
     </ClientContext.Provider>
   );
 };
