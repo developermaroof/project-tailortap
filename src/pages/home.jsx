@@ -1,47 +1,45 @@
-import { useEffect, useState } from "react";
-import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Video from "../assets/video.png";
-import NoClients from "../assets/noclients.png";
-import { Link, useNavigate } from "react-router-dom";
-import { IoMdClose } from "react-icons/io";
-import ModelImg from "../assets/modelimg.png";
-import { useAuth } from "../contexts/authContext";
+import { useState } from "react"; // React hooks for state and lifecycle
+import { FaAngleLeft, FaPlus } from "react-icons/fa6"; // Icons for UI
+import Video from "../assets/video.png"; // Video icon/image asset
+import NoClients from "../assets/noclients.png"; // Placeholder image for no clients
+import { Link, useNavigate } from "react-router-dom"; // Navigation and linking
+import { IoMdClose } from "react-icons/io"; // Close icon
+import ModelImg from "../assets/modelimg.png"; // Image for modal content
+import { useAuth } from "../contexts/authContext"; // Custom hook for authentication context
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { userLoggedIn } = useAuth();
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const navigate = useNavigate(); // React Router navigation
+  const { userLoggedIn } = useAuth(); // Check if user is logged in using context
+  const [isModelOpen, setIsModelOpen] = useState(false); // State to track modal visibility
 
-  const [clientData, setClientData] = useState([]);
-
-  useEffect(() => {
-    const getClientData = JSON.parse(localStorage.getItem("client") || "[]");
-    setClientData(getClientData);
-  }, []);
-
+  // Toggle modal visibility
   const toggleModel = () => {
     setIsModelOpen(!isModelOpen);
   };
 
   return (
     <>
-      {userLoggedIn ? (
+      {userLoggedIn ? ( // Check if user is logged in
         <>
+          {/* Header Section */}
           <div className="relative max-w-xs mx-auto w-full">
             <div
               onClick={toggleModel}
               className="absolute top-5 right-5 bg-black rounded-full p-[2px]"
             >
+              {/* Video Icon */}
               <img src={Video} alt="" className="w-[22px] h-[22px]" />
             </div>
             <div className="absolute top-5 left-5">
               <FaAngleLeft className="w-[22px] h-[22px]" />
             </div>
           </div>
+
+          {/* Main Content */}
           <div className="mx-auto h-[92vh] overflow-auto max-w-xs">
             <div className="mx-4">
               <div className="pt-6">
-                {/* Model */}
+                {/* Modal for Plan Upgrade */}
                 {isModelOpen && (
                   <div className="fixed max-w-xs mx-auto inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white mx-6 p-8 rounded-lg max-w-sm w-full shadow-lg relative">
@@ -49,6 +47,7 @@ const Home = () => {
                         className="absolute top-5 right-5 text-white bg-themeColor rounded-full p-1 cursor-pointer"
                         onClick={toggleModel}
                       >
+                        {/* Close Icon */}
                         <IoMdClose />
                       </div>
                       <div className="flex flex-col justify-center items-center text-center">
@@ -57,7 +56,7 @@ const Home = () => {
                           Upgrade your plan!
                         </h1>
                         <p className="font-poppins text-xs">
-                          You’re in your 7 days free trail
+                          You’re in your 7 days free trial
                         </p>
                         <button className="bg-themeColor text-white cursor-pointer text-xs rounded-[4px] p-2 px-6 mt-4 font-bold font-poppins">
                           <Link to="/chooseplan">Upgrade Now</Link>
@@ -66,10 +65,12 @@ const Home = () => {
                     </div>
                   </div>
                 )}
-                {/*  */}
+
+                {/* Add New Member & Watch Previous Data */}
                 <div className="flex flex-col justify-center items-center mt-14">
                   <div className="bg-themeColor w-full flex flex-col justify-center items-center p-5 rounded-lg text-center">
                     <div className="bg-plusIconBg rounded-full p-1 flex justify-center items-center text-center">
+                      {/* Link to Add New Member */}
                       <Link to="/clientdetails">
                         <FaPlus className="w-[25px] h-[25px] text-white" />
                       </Link>
@@ -78,41 +79,30 @@ const Home = () => {
                       <p className="text-white mt-2 text-sm">Add New Member</p>
                     </Link>
                   </div>
-                  <div className="border-themeColor border-2 w-full flex flex-col justify-center items-center p-4 mt-6 rounded-lg text-center">
-                    <p className="text-black text-sm font-semibold">
-                      Watch previous data
-                    </p>
-                  </div>
                 </div>
-                {/*  */}
+
+                {/* My Clients Section */}
                 <h1 className="font-bold mt-10">My Clients</h1>
                 <div className="border-2 p-10">
-                  {clientData.length > 0 ? (
-                    <div className="mt-4 p-10 border-2 border-themeColor">
-                      {clientData.map((client) => (
-                        <div
-                          key={client.id}
-                          className="border-2 mt-2 border-red-600 flex flex-col justify-center items-center text-center"
-                        >
-                          <h1>{client.fullname}</h1>
-                        </div>
-                      ))}
+                  <div className="mt-4 p-10 border-2 border-themeColor">
+                    <div className="border-2 mt-2 border-red-600 flex flex-col justify-center items-center text-center">
+                      <h1>fullname</h1>
                     </div>
-                  ) : (
-                    <div className="flex flex-col justify-center relative items-center text-center">
-                      <img src={NoClients} alt="" className="w-full h-full" />
-                      <p className="text-gray-400 absolute bottom-2">
-                        No Client has been created yet..
-                      </p>
-                    </div>
-                  )}
+                  </div>
+
+                  <div className="flex flex-col justify-center relative items-center text-center">
+                    <img src={NoClients} alt="" className="w-full h-full" />
+                    <p className="text-gray-400 absolute bottom-2">
+                      No Client has been created yet..
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </>
       ) : (
-        navigate("/login")
+        navigate("/login") // Redirect to login if not authenticated
       )}
     </>
   );

@@ -35,6 +35,8 @@ const ChooseLang = () => {
                     ? "bg-hoverColor"
                     : "hover:bg-hoverColor"
                 }`}
+                aria-label={`Select ${language}`}
+                aria-current={activeLanguage === language ? "true" : "false"}
               >
                 <h1 className="font-inner font-normal">{language}</h1>
                 {activeLanguage === language && (
@@ -45,7 +47,10 @@ const ChooseLang = () => {
               </button>
             ))}
             {/* Continue Button */}
-            <button className="flex justify-center font-bold font-poppins text-white cursor-pointer py-2 mt-10 bg-themeColor">
+            <button
+              className="flex justify-center font-bold font-poppins text-white cursor-pointer py-2 mt-10 bg-themeColor"
+              aria-label="Continue to login page"
+            >
               <Link to="/login">
                 <h1>Continue</h1>
               </Link>
