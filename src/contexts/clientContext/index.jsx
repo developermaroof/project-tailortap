@@ -80,7 +80,7 @@ export const ClientProvider = ({ children, userId }) => {
     try {
       const clientRef = collection(db, `users/${userId}/clients`); // Reference to Firestore collection
       const docRef = await addDoc(clientRef, clientData); // Add document to Firestore
-      toast.success(`Client added successfully with ID: ${docRef.id}`); // Show success message
+      // toast.success(`Client added successfully with ID: ${docRef.id}`); // Show success message
       resetClientData(); // Reset form data
       return docRef.id; // Return the ID of the added document
     } catch (error) {
@@ -101,7 +101,7 @@ export const ClientProvider = ({ children, userId }) => {
     try {
       const clientRef = doc(db, `users/${userId}/clients`, clientId); // Reference to specific Firestore document
       await updateDoc(clientRef, clientData); // Update the document with new data
-      toast.success("Client updated successfully"); // Show success message
+      // toast.success("Client updated successfully"); // Show success message
     } catch (error) {
       toast.error(`Error updating client: ${error.message}`); // Show error message
     } finally {
@@ -147,7 +147,7 @@ export const ClientProvider = ({ children, userId }) => {
     try {
       const clientRef = collection(db, `users/${userId}/clients`); // Reference to Firestore collection
       const querySnapshot = await getDocs(clientRef); // Get all documents from the collection
-      toast.success("Clients fetched successfully"); // Show success message
+      // toast.success("Clients fetched successfully"); // Show success message
       return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // Map documents to array of objects
     } catch (error) {
       toast.error(`Error fetching clients: ${error.message}`); // Show error message
