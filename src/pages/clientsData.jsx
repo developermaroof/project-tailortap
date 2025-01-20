@@ -11,7 +11,7 @@ const ClientsData = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
 
   // Destructure the clientId from the route parameters
-  const { clientId } = useParams();
+  const { clientid } = useParams();
 
   // Destructure methods and data from the custom client context
   const {
@@ -23,7 +23,7 @@ const ClientsData = () => {
   } = useClient();
 
   // Log the clientId for debugging purposes
-  console.log(clientId);
+  // console.log("In App", clientid);
 
   // Hook to navigate to different routes programmatically
   const navigate = useNavigate();
@@ -32,18 +32,18 @@ const ClientsData = () => {
   useEffect(() => {
     // Define an asynchronous function to fetch data
     const fetchClientData = async () => {
-      if (clientId) {
+      if (clientid) {
         // Check if a clientId is provided
-        const fetchedClientData = await getClient(clientId); // Fetch client data from the database
-        if (fetchedClientData) {
-          setClientData(fetchedClientData); // Update the context with fetched client data
+        const data = await getClient(clientid); // Fetch client data from the database
+        if (data) {
+          setClientData(data); // Update the context with fetched client data
         } else {
-          console.error("No client data found for this ID:", clientId); // Log an error if no data is found
+          console.error("No client data found for this ID:", clientid); // Log an error if no data is found
         }
       }
     };
     fetchClientData(); // Call the function
-  }, [clientId, getClient, setClientData]); // Dependencies for the effect
+  }, [clientid, getClient, setClientData]); // Dependencies for the effect
 
   // If no client data is available, show a fallback message
   if (!clientData.fullname) {
@@ -58,9 +58,9 @@ const ClientsData = () => {
   const handleSaveChanges = () => {
     console.log("clicked"); // Log a message for debugging
 
-    if (clientId) {
+    if (clientid) {
       // Check if a clientId is available
-      updateClient(clientId); // Update client data in the database
+      updateClient(clientid); // Update client data in the database
       alert("Client Updated"); // Show a success message
       navigate("/search"); // Navigate back to the search page
     } else {

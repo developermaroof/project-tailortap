@@ -1,5 +1,5 @@
 // Importing necessary modules and functions
-import { createContext, useContext, useState } from "react"; // React tools for creating and using context and managing state.
+import { createContext, useCallback, useContext, useState } from "react"; // React tools for creating and using context and managing state.
 import { db } from "../../firebase/firebaseConfig"; // Firebase configuration file for database access.
 import {
   collection,
@@ -110,31 +110,35 @@ export const ClientProvider = ({ children, userId }) => {
   };
 
   // Function to fetch a single client's data from Firestore
-  const getClient = async (clientId) => {
-    if (!userId || !clientId) {
-      toast.error("User ID or Client ID is missing!"); // Show error message
-      return null;
-    }
-
-    setLoading(true); // Set loading state
-    try {
-      const clientRef = doc(db, `users/${userId}/clients`, clientId); // Reference to Firestore document
-      const docSnap = await getDoc(clientRef); // Get the document snapshot
-      if (docSnap.exists()) {
-        const data = docSnap.data(); // Extract data from the document
-        setClientData(data); // Update state with fetched data
-        return data; // Return the fetched data
-      } else {
-        toast.info("No client found for this ID"); // Show info message
+  const getClient = useCallback(
+    async (clientId) => {
+      if (!userId || !clientId) {
+        toast.error("User ID or Client ID is missing!"); // Show error message
         return null;
       }
-    } catch (error) {
-      toast.error(`Error fetching client data: ${error.message}`); // Show error message
-      return null;
-    } finally {
-      setLoading(false); // Reset loading state
-    }
-  };
+
+      setLoading(true); // Set loading state
+      try {
+        const clientRef = doc(db, `users/${userId}/clients`, clientId); // Reference to Firestore document
+        const docSnap = await getDoc(clientRef); // Get the document snapshot
+        if (docSnap.exists()) {
+          const data = docSnap.data(); // Extract data from the document
+          setClientData(data); // Update state with fetched data
+          return data; // Return the fetched data
+        } else {
+          toast.info("No client found for this ID"); // Show info message
+          return null;
+        }
+      } catch (error) {
+        toast.error(`Error fetching client data: ${error.message}`); // Show error message
+        return null;
+      } finally {
+        setLoading(false); // Reset loading state
+      }
+    },
+    [userId]
+  );
+  const setClientDataMemoized = useCallback((data) => setClientData(data), []);
 
   // Function to fetch all clients from Firestore
   const getAllClients = async () => {
@@ -249,6 +253,7 @@ export const ClientProvider = ({ children, userId }) => {
         removeScreenshot,
         getAllClients,
         setClientData,
+        setClientDataMemoized,
       }}
     >
       {children} {/* Render child components */}
