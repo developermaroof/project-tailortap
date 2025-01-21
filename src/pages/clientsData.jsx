@@ -131,6 +131,26 @@ const ClientsData = () => {
                     </div>
                   )
                 )}
+
+                {/* Images Section */}
+                <div className="mt-6">
+                  <h2 className="text-xl font-semibold">Uploaded Images:</h2>
+                  {clientData.images.length > 0 ? (
+                    <div className="grid mt-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {clientData.images.map((imageUrl, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={imageUrl}
+                            alt={`Uploaded ${index + 1}`}
+                            className="w-full h-40 object-cover rounded shadow"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No images uploaded.</p>
+                  )}
+                </div>
               </div>
             </div>
             <button
