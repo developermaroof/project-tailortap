@@ -26,6 +26,7 @@ import Upload from "./pages/upload";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ClientProvider } from "./contexts/clientContext";
 import { useAuth } from "./contexts/authContext";
+import Settings from "./pages/settings";
 
 function App() {
   const { currentUser } = useAuth();
@@ -184,6 +185,15 @@ function App() {
             element={
               <div className="flex flex-col items-center justify-center">
                 <ClientsData />
+                <Nav />
+              </div>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <div className="flex flex-col items-center justify-center">
+                <Settings />
                 <Nav />
               </div>
             }

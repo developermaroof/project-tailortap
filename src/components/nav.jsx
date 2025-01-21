@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GoHomeFill } from "react-icons/go";
 import { FaSearch, FaRegUser } from "react-icons/fa";
+
 import { IoIosSettings } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -53,17 +54,18 @@ const Nav = () => {
         </Link>
 
         {/* Settings */}
-        <div
-          onClick={() => handleNavClick("settings")}
-          className={`cursor-pointer ${
-            activeNav === "settings"
-              ? "bg-themeColor rounded-full p-2 text-black mb-10 border-4 border-white"
-              : ""
-          }`}
-          aria-label="Settings"
-        >
-          <IoIosSettings className="w-[25px] h-[25px]" />
-        </div>
+        <Link to="/settings" aria-label="Settings">
+          <div
+            onClick={() => handleNavClick("settings")}
+            className={`cursor-pointer ${
+              activeNav === "settings"
+                ? "bg-themeColor rounded-full p-2 text-black mb-10 border-4 border-white"
+                : ""
+            }`}
+          >
+            <IoIosSettings className="w-[25px] h-[25px]" />
+          </div>
+        </Link>
 
         {/* User */}
         <div
