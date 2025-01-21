@@ -4,6 +4,7 @@ import { FaAngleLeft } from "react-icons/fa6"; // Icon from react-icons for a le
 import Video from "../assets/video.png"; // Importing a video icon/image
 import { useNavigate, useParams } from "react-router-dom"; // React Router hooks for navigation and accessing route parameters
 import { useClient } from "../contexts/clientContext"; // Custom context to access client-related functions and data
+import { toast } from "react-toastify";
 
 // Main functional component
 const ClientsData = () => {
@@ -61,10 +62,10 @@ const ClientsData = () => {
     if (clientid) {
       // Check if a clientId is available
       updateClient(clientid); // Update client data in the database
-      alert("Client Updated"); // Show a success message
+      toast.success("Client Updated"); // Show a success message
       navigate("/search"); // Navigate back to the search page
     } else {
-      alert("No client ID provided"); // Show an error message if no clientId
+      toast.error("No client ID provided"); // Show an error message if no clientId
     }
   };
 
@@ -105,24 +106,32 @@ const ClientsData = () => {
           <div className="mt-10">
             <p className="text-themeColor text-sm">Detail</p>{" "}
             {/* Section title */}
-            <div className="border-t-[1px] border-gray-300 text-[14px] mt-4 py-6 flex flex-col gap-4">
-              {Object.entries(clientData.measurements || {}).map(
-                (
-                  [key, value] // Loop through client measurements
-                ) => (
-                  <div key={key} className="flex justify-between items-center">
-                    <p>{key}</p> {/* Measurement name */}
-                    <input
-                      type="text"
-                      value={value} // Current measurement value
-                      onChange={
-                        (e) => handleMeasurementInput(key, e.target.value) // Update value on change
-                      }
-                      className="bg-gray-200 px-[30px] py-[4px] rounded-md"
-                    />
-                  </div>
-                )
-              )}
+            <div className="border-t-[1px] border-gray-300 mt-4">
+              <div className="text-[14px] py-6 flex flex-col gap-4 mt-2 overflow-auto">
+                {Object.entries(clientData.measurements || {}).map(
+                  (
+                    [key, value] // Loop through client measurements
+                  ) => (
+                    <div
+                      key={key}
+                      className="flex justify-between px-4 gap-2 items-center"
+                    >
+                      <p className="font-poppins leading-loose uppercase">
+                        {key}
+                      </p>{" "}
+                      {/* Measurement name */}
+                      <input
+                        type="text"
+                        value={value} // Current measurement value
+                        onChange={
+                          (e) => handleMeasurementInput(key, e.target.value) // Update value on change
+                        }
+                        className="bg-gray-200 py-[6px] text-[14px] font-poppins rounded-md w-[60px] text-center"
+                      />
+                    </div>
+                  )
+                )}
+              </div>
             </div>
             <button
               onClick={handleSaveChanges} // Save changes button
