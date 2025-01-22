@@ -1,16 +1,11 @@
-import { IoMdClose } from "react-icons/io";
-import Video from "../assets/video.png"; // Video icon/image asset
-import { FaAngleLeft } from "react-icons/fa6";
 import { useState } from "react";
-import ModelImg from "../assets/modelimg.png";
 import { Link } from "react-router-dom";
+import Video from "../assets/video.png"; // Video icon/image asset
+import ModelImg from "../assets/modelimg.png";
+import { IoMdClose, IoIosSettings, IoMdMail, IoMdLock } from "react-icons/io";
+import { FaAngleLeft } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { CiLogout } from "react-icons/ci";
-import { IoMdLock } from "react-icons/io";
-import { IoLanguage } from "react-icons/io5";
-import { IoIosNotifications } from "react-icons/io";
-import { IoMdPersonAdd } from "react-icons/io";
+import { CiLogout, CiEdit } from "react-icons/ci";
 
 const Admin = () => {
   const [isModelOpen, setIsModelOpen] = useState(false); // State to track modal visibility
@@ -19,7 +14,7 @@ const Admin = () => {
   };
   return (
     <>
-      <div className="relative bg-themeColor rounded-b-[40px] py-14 max-w-xs mx-auto w-full border-[1px] flex justify-center">
+      <div className="relative bg-themeColor h-[30vh] py-14 max-w-xs mx-auto w-full border-[1px] flex justify-center">
         <div
           onClick={toggleModel}
           className="absolute top-5 right-5 bg-black rounded-full p-[2px]"
@@ -56,70 +51,51 @@ const Admin = () => {
             </div>
           </div>
         )}
-        <div className="bg-white rounded-lg py-[2px] px-[10px] bottom-[-14px] absolute">
-          <h1 className="font-semibold font-poppins text-lg">Admin</h1>
-        </div>
-      </div>
-      {/* Main */}
-      <div className="mx-auto p-8 pt-16 w-full h-[80vh] overflow-auto max-w-xs">
-        <div className="p-2 flex flex-col gap-14">
-          {/*  */}
-          <div>
-            <div className="font-poppins bg-settingHeadingColor text-green-800 mb-8 rounded-xl p-[2px] pl-3 uppercase">
-              <h1>Accounts</h1>
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col items-center gap-2">
+            <div className="bg-white rounded-full h-[80px] w-[80px] items-center justify-center flex relative">
+              <FaRegUser className="bg-adminColor h-[70px] p-4 w-[70px] rounded-full text-[60px]" />
+              <CiEdit className="absolute bg-white rounded-full p-[2px] w-[18px] h-[18px] bottom-1 right-0" />
             </div>
-            <div className="flex flex-col">
-              <div className="text-md flex border-b-[1px] border-settingGrayColor px-4 p-2 items-center text-settingGrayColor">
-                <FaRegUser />
-                <div className="flex justify-between w-full items-center">
-                  <span className="text-sm ml-4">Edit Profile Name</span>
-                  <MdKeyboardArrowRight className="text-2xl" />
-                </div>
-              </div>
-              <div className="text-md flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center text-settingGrayColor">
-                <IoMdLock className="text-xl ml-[-2px]" />
-
-                <div className="flex justify-between w-full items-center">
-                  <span className="text-sm ml-4">Change Password</span>
-                  <MdKeyboardArrowRight className="text-2xl" />
-                </div>
-              </div>
+            <div>
+              <span>Your Name</span>
             </div>
           </div>
-          {/*  */}
-          <div>
-            <div className="font-poppins bg-settingHeadingColor text-green-800 mb-8 rounded-xl p-[2px] pl-3 uppercase">
-              <h1>PREFERENCES</h1>
+        </div>
+        {/* Main */}
+
+        <div className="rounded-xl shadow-lg bg-white absolute bottom-[-220px] w-[250px]">
+          <div className="flex flex-col">
+            <div className="text-md flex border-b-[1px] border-settingGrayColor p-4 pl-6 items-center ">
+              <CiEdit className="text-xl ml-[-2px]" />
+
+              <span className="text-[12px] ml-6 text-settingGrayColor">
+                Edit Profile Name
+              </span>
             </div>
-            <div className="flex flex-col">
-              <div className="text-md flex border-b-[1px] border-settingGrayColor px-4 p-2 items-center text-settingGrayColor">
-                <IoLanguage className="text-2xl ml-[-2px]" />
+            <div className="text-md flex border-b-[1px] border-settingGrayColor p-4 pl-6 items-center ">
+              <IoMdLock className="text-xl ml-[-2px]" />
 
-                <div className="flex justify-between w-full items-center">
-                  <span className="text-sm ml-4">Language</span>
-                  <MdKeyboardArrowRight className="text-2xl" />
-                </div>
-              </div>
-              <div className="text-md flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center text-settingGrayColor">
-                <IoIosNotifications className="text-2xl ml-[-2px]" />
+              <span className="text-[12px] ml-6 text-settingGrayColor">
+                Change Password
+              </span>
+            </div>
+            <div className="text-md flex border-b-[1px] border-settingGrayColor p-4 pl-6 items-center ">
+              <IoMdMail className="text-xl ml-[-2px]" />
 
-                <div className="flex justify-between w-full items-center">
-                  <span className="text-sm ml-4">Receive Notification</span>
-                  <MdKeyboardArrowRight className="text-2xl" />
-                </div>
-              </div>
-              <div className="text-md flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center text-settingGrayColor">
-                <IoMdPersonAdd className="text-2xl ml-[-2px]" />
-
-                <div className="flex justify-between w-full items-center">
-                  <span className="text-sm ml-4">Invite Friend</span>
-                  <MdKeyboardArrowRight className="text-2xl" />
-                </div>
-              </div>
-              <div className="text-md text-logoutColor flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center text-settingGrayColor">
-                <CiLogout className="text-lg ml-[1px]" />
-                <span className="text-sm ml-[18px]">Logout</span>
-              </div>
+              <span className="text-[12px] ml-6 text-settingGrayColor">
+                Change Email Address
+              </span>
+            </div>
+            <div className="text-md flex border-b-[1px] border-settingGrayColor p-4 pl-6 items-center ">
+              <IoIosSettings className="text-[21px] ml-[-2px]" />
+              <span className="text-[12px] ml-6 text-settingGrayColor">
+                Setting
+              </span>
+            </div>
+            <div className="text-md text-logOutColor flex p-4 pl-6 items-center ">
+              <CiLogout className="text-lg ml-[1px]" />
+              <span className="text-[12px] ml-6">Logout</span>
             </div>
           </div>
         </div>

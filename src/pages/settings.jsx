@@ -1,16 +1,18 @@
-import { IoMdClose } from "react-icons/io";
-import Video from "../assets/video.png"; // Video icon/image asset
-import { FaAngleLeft } from "react-icons/fa6";
 import { useState } from "react";
-import ModelImg from "../assets/modelimg.png";
 import { Link } from "react-router-dom";
+import Video from "../assets/video.png"; // Video icon/image asset
+import ModelImg from "../assets/modelimg.png";
+import {
+  IoMdClose,
+  IoMdPersonAdd,
+  IoIosNotifications,
+  IoMdLock,
+} from "react-icons/io";
+import { FaAngleLeft } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-import { IoMdLock } from "react-icons/io";
 import { IoLanguage } from "react-icons/io5";
-import { IoIosNotifications } from "react-icons/io";
-import { IoMdPersonAdd } from "react-icons/io";
 
 const Settings = () => {
   const [isModelOpen, setIsModelOpen] = useState(false); // State to track modal visibility
@@ -116,7 +118,7 @@ const Settings = () => {
                   <MdKeyboardArrowRight className="text-2xl" />
                 </div>
               </div>
-              <div className="text-md text-logoutColor flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center text-settingGrayColor">
+              <div className="text-md text-logOutColor flex border-b-[1px] border-settingGrayColor px-4 p-2 pt-4 items-center">
                 <CiLogout className="text-lg ml-[1px]" />
                 <span className="text-sm ml-[18px]">Logout</span>
               </div>

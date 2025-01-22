@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { GoHomeFill } from "react-icons/go";
-import { FaSearch, FaRegUser } from "react-icons/fa";
-
-import { IoIosSettings } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { FaSearch, FaRegUser } from "react-icons/fa";
+import { GoHomeFill } from "react-icons/go";
+import { IoIosSettings } from "react-icons/io";
 
 const Nav = () => {
   const [activeNav, setActiveNav] = useState(
