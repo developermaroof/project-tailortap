@@ -27,6 +27,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ClientProvider } from "./contexts/clientContext";
 import { useAuth } from "./contexts/authContext";
 import Settings from "./pages/settings";
+import Admin from "./pages/admin";
 
 function App() {
   const { currentUser } = useAuth();
@@ -194,6 +195,15 @@ function App() {
             element={
               <div className="flex flex-col items-center justify-center">
                 <Settings />
+                <Nav />
+              </div>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <div className="flex flex-col items-center justify-center">
+                <Admin />
                 <Nav />
               </div>
             }

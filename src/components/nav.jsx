@@ -67,18 +67,19 @@ const Nav = () => {
           </div>
         </Link>
 
-        {/* User */}
-        <div
-          onClick={() => handleNavClick("user")}
-          className={`cursor-pointer ${
-            activeNav === "user"
-              ? "bg-themeColor rounded-full p-2 text-black mb-10 border-4 border-white"
-              : ""
-          }`}
-          aria-label="User"
-        >
-          <FaRegUser className="w-[20px] h-[20px]" />
-        </div>
+        {/* Admin */}
+        <Link to="/admin" aria-label="Admin">
+          <div
+            onClick={() => handleNavClick("user")}
+            className={`cursor-pointer ${
+              activeNav === "user"
+                ? "bg-themeColor rounded-full p-2 text-black mb-10 border-4 border-white"
+                : ""
+            }`}
+          >
+            <FaRegUser className="w-[20px] h-[20px]" />
+          </div>
+        </Link>
       </div>
     </nav>
   );

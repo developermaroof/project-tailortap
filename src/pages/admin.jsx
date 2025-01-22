@@ -12,7 +12,7 @@ import { IoLanguage } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
 
-const Settings = () => {
+const Admin = () => {
   const [isModelOpen, setIsModelOpen] = useState(false); // State to track modal visibility
   const toggleModel = () => {
     setIsModelOpen(!isModelOpen);
@@ -57,7 +57,7 @@ const Settings = () => {
           </div>
         )}
         <div className="bg-white rounded-lg py-[2px] px-[10px] bottom-[-14px] absolute">
-          <h1 className="font-semibold font-poppins text-lg">Settings</h1>
+          <h1 className="font-semibold font-poppins text-lg">Admin</h1>
         </div>
       </div>
       {/* Main */}
@@ -128,4 +128,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Admin;
