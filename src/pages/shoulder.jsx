@@ -12,6 +12,7 @@ const Shoulder = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     if (location.state?.clientId && !isClientDataLoaded) {
@@ -24,14 +25,30 @@ const Shoulder = () => {
 
   const handleSaveShoulder = () => {
     const clientId = location.state.clientId;
-
+    // Check if the shoulder field is empty
+    if (!clientData.measurements.shoulder) {
+      setErrorMessage(
+        "shoulder is required. Please fill the field or click Skip."
+      ); // Show error message
+      return; // Prevent navigation
+    }
+    // Clear any previous error messages and update the client data
+    setErrorMessage("");
     updateClient(clientId);
 
     navigate("/measurements/arms", {
       state: { clientId },
     });
   };
+  const handleSkip = () => {
+    const clientId = location.state.clientId;
 
+    // Clear the error message and proceed to the next page
+    setErrorMessage("");
+    navigate("/measurements/arms", {
+      state: { clientId },
+    });
+  };
   return (
     <>
       <div className="relative max-w-xs mx-auto w-full">
@@ -79,6 +96,10 @@ const Shoulder = () => {
                   placeholder="Enter Shoulder"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
                 />
+                {/* Display error message */}
+                {errorMessage && (
+                  <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <button
@@ -87,7 +108,10 @@ const Shoulder = () => {
                 >
                   Next
                 </button>
-                <button className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2">
+                <button
+                  onClick={handleSkip}
+                  className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2"
+                >
                   Skip
                 </button>
               </div>

@@ -12,6 +12,7 @@ const Lap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     if (location.state?.clientId && !isClientDataLoaded) {
@@ -24,8 +25,25 @@ const Lap = () => {
 
   const handleSaveLap = () => {
     const clientId = location.state.clientId;
+    // Check if the lap field is empty
+    if (!clientData.measurements.lap) {
+      setErrorMessage("lap is required. Please fill the field or click Skip."); // Show error message
+      return; // Prevent navigation
+    }
+    // Clear any previous error messages and update the client data
+    setErrorMessage("");
     updateClient(clientId);
     navigate("/measurements/pantshalwar", { state: { clientId } });
+  };
+
+  const handleSkip = () => {
+    const clientId = location.state.clientId;
+
+    // Clear the error message and proceed to the next page
+    setErrorMessage("");
+    navigate("/measurements/pantshalwar", {
+      state: { clientId },
+    });
   };
 
   return (
@@ -71,6 +89,10 @@ const Lap = () => {
                   placeholder="Enter Lap"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
                 />
+                {/* Display error message */}
+                {errorMessage && (
+                  <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <button
@@ -79,7 +101,10 @@ const Lap = () => {
                 >
                   Next
                 </button>
-                <button className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2">
+                <button
+                  onClick={handleSkip}
+                  className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2"
+                >
                   Skip
                 </button>
               </div>

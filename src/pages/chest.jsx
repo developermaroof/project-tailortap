@@ -12,6 +12,7 @@ const Chest = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isClientDataLoaded, setIsClientDataLoaded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     if (location.state?.clientId && !isClientDataLoaded) {
@@ -24,8 +25,27 @@ const Chest = () => {
 
   const handleSaveChest = () => {
     const clientId = location.state.clientId;
+    // Check if the chest field is empty
+    if (!clientData.measurements.chest) {
+      setErrorMessage(
+        "chest is required. Please fill the field or click Skip."
+      ); // Show error message
+      return; // Prevent navigation
+    }
+    // Clear any previous error messages and update the client data
+    setErrorMessage("");
     updateClient(clientId);
     navigate("/measurements/fitting", { state: { clientId } });
+  };
+
+  const handleSkip = () => {
+    const clientId = location.state.clientId;
+
+    // Clear the error message and proceed to the next page
+    setErrorMessage("");
+    navigate("/measurements/fitting", {
+      state: { clientId },
+    });
   };
 
   return (
@@ -53,7 +73,7 @@ const Chest = () => {
                 </p>
               </div>
               <div className="relative  h-[280px]">
-                <img src={ChestLogo} alt="lengthvector" className="w-[250px]" />
+                <img src={ChestLogo} alt="chestvector" className="w-[250px]" />
                 <div className="flex right-[25px] text-lg top-[110px] justify-center items-center absolute">
                   <img src={chestrightleft} alt="" />
                 </div>
@@ -71,6 +91,10 @@ const Chest = () => {
                   placeholder="Enter Chest"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
                 />
+                {/* Display error message */}
+                {errorMessage && (
+                  <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <button
@@ -79,7 +103,10 @@ const Chest = () => {
                 >
                   Next
                 </button>
-                <button className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2">
+                <button
+                  onClick={handleSkip}
+                  className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2"
+                >
                   Skip
                 </button>
               </div>

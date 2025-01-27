@@ -14,6 +14,7 @@ const Length = () => {
   const location = useLocation(); // Access current location (used to get clientId from route state)
   const navigate = useNavigate(); // Function for navigating to other pages
   const [isClientDataLoaded, setIsClientDataLoaded] = useState(false); // State to track if client data is loaded
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   // Effect hook that runs when the component is mounted or dependencies change
   useEffect(() => {
@@ -29,9 +30,28 @@ const Length = () => {
   // Handle saving the length measurement and navigating to the next page
   const handleSaveLength = () => {
     const clientId = location.state.clientId; // Get clientId from route state
+    // Check if the length field is empty
+    if (!clientData.measurements.length) {
+      setErrorMessage(
+        "Length is required. Please fill the field or click Skip."
+      ); // Show error message
+      return; // Prevent navigation
+    }
+    // Clear any previous error messages and update the client data
+    setErrorMessage("");
     updateClient(clientId); // Update the client data with the new measurement
 
     // Navigate to the next measurement page, passing clientId in the state
+    navigate("/measurements/shoulder", {
+      state: { clientId },
+    });
+  };
+
+  const handleSkip = () => {
+    const clientId = location.state.clientId;
+
+    // Clear the error message and proceed to the next page
+    setErrorMessage("");
     navigate("/measurements/shoulder", {
       state: { clientId },
     });
@@ -90,7 +110,7 @@ const Length = () => {
               <div>
                 {/* Input field for length */}
                 <input
-                  value={clientData.measurements.length || ""} // Bind input value to client's length measurement, defaulting to empty string
+                  value={clientData.measurements.length || ""} // field should not be empty if do not want to put length click skip to go on the next page without filling this field
                   onChange={
                     (e) => handleMeasurementInput("length", e.target.value) // Update the length in the context when input changes
                   }
@@ -98,6 +118,10 @@ const Length = () => {
                   placeholder="Enter Length"
                   className="text-sm border-themeColor border-[1px] rounded-md w-full p-3"
                 />
+                {/* Display error message */}
+                {errorMessage && (
+                  <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+                )}
               </div>
 
               {/* Buttons for next action or skipping */}
@@ -108,7 +132,10 @@ const Length = () => {
                 >
                   Next
                 </button>
-                <button className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2">
+                <button
+                  onClick={handleSkip}
+                  className="font-bold font-poppins text-themeColor cursor-pointer border-themeColor border-[1px] rounded-md uppercase w-full p-2"
+                >
                   Skip
                 </button>
               </div>
